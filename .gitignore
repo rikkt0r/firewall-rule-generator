@@ -1,0 +1,18 @@
+node_modules/
+bower_components/
+coverage/
+.sass-cache/
+.idea/
+.tmp/
+dist/
+### Yeoman template
+node_modules/
+bower_components/
+*.log
+
+build/
+dist/
+### Sass template
+.sass-cache/
+*.css.map
+
