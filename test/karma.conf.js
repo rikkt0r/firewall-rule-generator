@@ -28,6 +28,7 @@ module.exports = function(config) {
       '../bower_components/angular-toastr/dist/angular-toastr.tpls.js',
       '../bower_components/moment/moment.js',
       '../bower_components/ui-router/release/angular-ui-router.js',
+      '../bower_components/vis/dist/vis.min.js',
       '../bower_components/angular-mocks/angular-mocks.js',
       // endbower
       '../app/scripts/**/*.js',

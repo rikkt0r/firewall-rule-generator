@@ -8,8 +8,11 @@
  * Controller of yapp
  */
 angular.module('yapp')
-  .controller('HostsCtrl', function($scope, $state) {
+    .controller('HostsCtrl', function ($scope, $state) {
 
-    $scope.$state = $state;
+        $scope.$state = $state;
+        $scope.hosts = {
+            "a" : 123
+        };
 
-  });
+    });
