@@ -14,6 +14,12 @@
      */
 
 
+  .nav > li > span {
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+  }
+
     /*
      * Global add-ons
      */
@@ -83,8 +89,25 @@
       margin-bottom: 20px;
       margin-left: -20px;
       margin-top: 20px;
+
+      .nav-sidebar {
+        margin-right: 0; /* 20px padding + 1px border */
+        margin-bottom: 0;
+        margin-left: 0;
+        margin-top: 0;
+
+        a {
+          padding-left: 40px;
+          //background: darken(@brand-primary, 5%);
+        }
+
+        .active > a {
+          //background: darken(@brand-primary, 5%);
+        }
+      }
+
     }
-    .nav-sidebar > li > a {
+    .nav-sidebar > li > a, .nav-sidebar > li > span {
       color: #fff;
       padding-right: 20px;
       padding-left: 20px;

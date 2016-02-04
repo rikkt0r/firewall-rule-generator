@@ -1,0 +1,39 @@
+<div id="addnew-page" class="addnew-page">
+    <div class="row">
+        <h1>Hosts</h1>
+        <div class="jumbotron">
+                <form role="form" ng-submit="submit()">
+                    <div class="form-content">
+                        <div class="form-group">
+                            <input type="text" class="form-control input-underline input-lg" id="" placeholder="Email">
+                        </div>
+
+                        <div class="form-group">
+                            <input type="password" class="form-control input-underline input-lg" id="" placeholder="Password">
+                        </div>
+
+                        <div class="form-group">
+
+                            <select class="form-control input-underline input-lg">
+                                <option value="volvo">Volvo</option>
+                                <option value="saab">Saab</option>
+                                <option value="mercedes">Mercedes</option>
+                                <option value="audi">Audi</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-white btn-outline btn-lg btn-rounded">Login</button>
+
+                </form>
+        </div>
+    </div>
+    <div class="row">
+
+    </div>
+
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" ui-view>
+    </div>
+
+</div>
+

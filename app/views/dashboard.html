@@ -7,14 +7,18 @@
                     <h2 class="brand">Iptables<br/>
                         <small>ease up creating iptables entries</small>
                     </h2>
-                    <!--<img src="images/flat-avatar.png" class="user-avatar" /><br />-->
-                    <!--<a ui-sref="login" class="btn btn-white btn-outline btn-rounded btn-sm">Logout</a>-->
                 </div>
 
                 <ul class="nav nav-sidebar">
                     <li ng-class="{active: $state.includes('addnew')}"><a ui-sref="addnew">Add new</a></li>
                     <li ng-class="{active: $state.includes('overview')}"><a ui-sref="overview">Overview</a></li>
-                    <li ng-class="{active: $state.includes('reports')}"><a ui-sref="reports">Reports</a></li>
+                    <li ng-click="$scope.hosts = !$scope.hosts || $state.includes('hosts')"><span>Hosts</span>
+                        <ul class="nav nav-sidebar">
+                            <li ng-class="{active: $state.includes('hosts-list')}"><a ui-sref="hosts-list">List</a></li>
+                            <li ng-class="{active: $state.includes('hosts-graph')}"><a ui-sref="hosts-graph">Graph</a></li>
+                            </ul>
+                    </li>
+
                 </ul>
 
             </div>

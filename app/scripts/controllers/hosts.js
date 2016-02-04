@@ -8,7 +8,7 @@
  * Controller of yapp
  */
 angular.module('yapp')
-  .controller('AddNewCtrl', function($scope, $state) {
+  .controller('HostsCtrl', function($scope, $state) {
 
     $scope.$state = $state;
 
