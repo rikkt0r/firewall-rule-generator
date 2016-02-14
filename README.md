@@ -1,6 +1,6 @@
 # FwGen
-* [backend] Grzegorz Wójcicki, grzegorz-wojcicki@outlook.com
-* [frontend] Kamil Kopczyk,  snajqer@gmail.com
+* [backend] @rikkt0r, grzegorz-wojcicki@outlook.com
+* [frontend] @castoridae,  snajqer@gmail.com
 
 
 ## TODO:
@@ -10,7 +10,7 @@
 ### Run:
 
 * apt-get install mongodb // brew install mongodb
-* @mongo CLI:
+* mongo CLI:
 ```mongo
 use iptables
 db.addUser({'user': 'iptables', 'pwd': 'iptables_pass', roles: ['readWrite', 'dbAdmin']})
@@ -140,3 +140,31 @@ Response
 }
 ```
 #### GET /api/hosts/[host_id_w_uuid4]/rules
+Response
+```json
+{
+  "rules": [
+    {
+      "table": "filter",
+      "chain": "INPUT",
+      "protocol": "tcp",
+      "protocol_reverse": 0,
+      "source": null,
+      "source_mask": null,
+      "source_reverse": 0,
+      "destination": null,
+      "destination_mask": null,
+      "destination_reverse": 0,
+      "interface_in": "eth0",
+      "interface_out": null,
+      "fragment": null,
+      "counter": "bytes",
+      "modules": [
+        {"sys": "state", "params_set": [
+          {"sys": "state", "value": "RELATED,ESTABLISHED"},
+        ]},
+      ]
+    }
+  ]
+}
+```
