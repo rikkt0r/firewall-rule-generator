@@ -1,0 +1,3 @@
+class FwException(BaseException):
+    pass
+

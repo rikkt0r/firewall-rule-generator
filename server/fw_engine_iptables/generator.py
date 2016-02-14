@@ -1,5 +1,5 @@
 from fw_engine.generator import AbstractGenerator
-from fw_engine.models import Interface, Template, Rule, Module, ModuleParams, Host
+from fw_engine.models import Host
 
 
 class Generator(AbstractGenerator):
