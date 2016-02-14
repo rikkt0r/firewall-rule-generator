@@ -39,14 +39,14 @@ class Host(me.Document):
 
 
 class ModuleParams(me.EmbeddedDocument):
-    sys = me.StringField(max_length=16)
-    desc = me.StringField(max_length=80)
+    sys = me.StringField(max_length=16, required=True)
+    desc = me.StringField(max_length=120)
     value = me.StringField(min_length=1, max_length=60)
 
 
 class Module(me.EmbeddedDocument):
     sys = me.StringField(max_length=40)
-    desc = me.StringField(max_length=80)
+    desc = me.StringField(max_length=100)
     params_available = me.ListField(me.EmbeddedDocumentField(ModuleParams))
     params_set = me.ListField(me.EmbeddedDocumentField(ModuleParams))
 
@@ -94,7 +94,9 @@ class Rule(me.EmbeddedDocument):
     destination_mask = me.IntField(default=0)
     destination_reverse = me.BooleanField(default=False)
     interface_in = me.EmbeddedDocumentField(Interface)
+    interface_in_reverse = me.BooleanField(default=False)
     interface_out = me.EmbeddedDocumentField(Interface)
+    interface_out_reverse = me.BooleanField(default=False)
     fragment = me.IntField(choices=FRAGMENT, default=0)
     counter = me.IntField(choices=COUNTERS, default=0)
     modules = me.ListField(me.EmbeddedDocumentField(Module))

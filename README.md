@@ -156,7 +156,9 @@ Response
       "destination_mask": null,
       "destination_reverse": 0,
       "interface_in": "eth0",
+      "interface_in_reverse": 0,
       "interface_out": null,
+      "interface_out_reverse": 0,
       "fragment": null,
       "counter": "bytes",
       "modules": [
