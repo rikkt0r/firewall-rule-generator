@@ -77,7 +77,7 @@ DATABASES = {
 SESSION_ENGINE = 'mongoengine.django.sessions'
 
 MONGODB_NAME = 'iptables'
-MONGODB_DATABASE_HOST = 'mongodb://%s:%s@%s/%s' % ('iptables', 'iptables_passwd', 'localhost', MONGODB_NAME)
+MONGODB_DATABASE_HOST = 'mongodb://iptables:iptables_pass@localhost/%s' % MONGODB_NAME
 mongoengine.connect(MONGODB_NAME, host=MONGODB_DATABASE_HOST)
 
 
@@ -99,6 +99,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+TEST_RUNNER = 'fw_common.testrunner.NoSQLTestRunner'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/

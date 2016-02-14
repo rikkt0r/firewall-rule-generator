@@ -18,6 +18,12 @@ class Interface(me.EmbeddedDocument):
         super(Interface, self).clean()
 
 
+class Template(me.Document):
+    name = me.StringField(max_length=100)
+    desc = me.StringField(max_length=300)
+    ruleset = me.SortedListField(me.EmbeddedDocumentField('Rule'))
+
+
 class Host(me.Document):
     TYPES = (
         (0, 'PC/Laptop'),
@@ -28,22 +34,24 @@ class Host(me.Document):
     name = me.StringField(max_length=100, required=True)
     htype = me.IntField(choices=TYPES, default=0)
     interfaces = me.ListField(me.EmbeddedDocumentField(Interface))
+    template = me.ReferenceField(Template)
+    rules = me.SortedListField(me.EmbeddedDocumentField('Rule'))
 
 
-class ModuleParams(me.Document):
+class ModuleParams(me.EmbeddedDocument):
     sys = me.StringField(max_length=16)
     desc = me.StringField(max_length=80)
     value = me.StringField(min_length=1, max_length=60)
 
 
-class Module(me.Document):
+class Module(me.EmbeddedDocument):
     sys = me.StringField(max_length=40)
     desc = me.StringField(max_length=80)
     params_available = me.ListField(me.EmbeddedDocumentField(ModuleParams))
     params_set = me.ListField(me.EmbeddedDocumentField(ModuleParams))
 
 
-class Rule(me.Document):
+class Rule(me.EmbeddedDocument):
     TABLES = (
         (0, 'filter'),
         (1, 'raw'),
