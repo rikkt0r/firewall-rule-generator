@@ -42,14 +42,20 @@ Response
       "id": "d4b96f81-23b5-48db-9892-4e5db63ca1c5",
       "htype": 3
       "name": "Some host 1",
-      "interfaces_count": 2,
+      "interfaces": [
+        {"sys": "eth0", "desc": "100mbps realtek", "ip": "1.2.3.1", "netmask": 28},
+        {"sys": "eth1", "desc": "gigabitowy realtek", "ip": "1.2.4.133", "netmask": 24},
+      ],
       "template_name": "template name"
     },
     {
       "id": "e508011e-3484-401d-a3c8-5aa797075f2c",
       "htype": 1
       "name": "Some host 2",
-      "interfaces_count": 1,
+      "interfaces": [
+        {"sys": "eth0", "desc": "gigabitowy realtek", "ip": "12.11.10.1", "netmask": 24},
+        {"sys": "eth1", "desc": "gigabitowy realtek 2", "ip": "12.11.5.1", "netmask": 24},
+      ],
       "template_name": "template name"
     }
   ]
