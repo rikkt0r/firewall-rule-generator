@@ -33,6 +33,7 @@ class Host(me.Document):
 class ModuleParams(me.Document):
     sys = me.StringField(max_length=16)
     desc = me.StringField(max_length=80)
+    value = me.StringField(min_length=1, max_length=60)
 
 
 class Module(me.Document):
@@ -57,10 +58,9 @@ class Rule(me.Document):
     )
 
     PROTOCOLS = (
-        (0, 'None'),
-        (1, 'tcp'),
-        (2, 'udp'),
-        (3, 'icmp')
+        (0, 'tcp'),
+        (1, 'udp'),
+        (2, 'icmp')
     )
 
     FRAGMENT = (
@@ -76,7 +76,7 @@ class Rule(me.Document):
         (3, 'pkts bytes')
     )
     table = me.IntField(choices=TABLES, default=0)
-    chain = me.IntField(choices=CHAINS)
+    chain = me.IntField(choices=CHAINS, required=True)
     protocol = me.IntField(choices=PROTOCOLS)
     protocol_reverse = me.BooleanField(default=False)
     source = me.StringField(max_length=15)
