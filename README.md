@@ -5,7 +5,23 @@
 
 ## TODO:
 
-* everything
+#### readme api:
+* /api/hosts/[uuid4_host_id]/ PUT
+* /api/hosts/[uuid4_host_id]/ DELETE
+
+* /api/hosts/[uuid4_host_id]/rules/ POST
+* /api/hosts/[uuid4_host_id]/rules/[uuid4_rule_id]/ PUT
+* /api/hosts/[uuid4_host_id]/rules/[uuid4_rule_id]/ DELETE
+* /api/available/chains/ GET
+* /api/available/filters/ GET
+
+#### front:
+* kopiowanie reguły jako nowa
+* modyfikowanie reguly
+
+#### back:
+* prawie cale api
+* ogarniecie, skad leca wyjatki mongoengine albo zmienic biblioteke
 
 ### Run:
 
@@ -25,6 +41,21 @@ python server/manage.py runserver 5000
 
 
 # API
+
+## W skrocie
+
+* /api/hosts/ GET
+* /api/hosts/[uuid4_host_id]/ POST
+* /api/hosts/[uuid4_host_id]/ PUT
+* /api/hosts/[uuid4_host_id]/ DELETE
+
+* /api/hosts/[uuid4_host_id]/rules/ POST
+* /api/hosts/[uuid4_host_id]/rules/[uuid4_rule_id]/ PUT
+* /api/hosts/[uuid4_host_id]/rules/[uuid4_rule_id]/ DELETE
+
+* /api/available/modules/ GET
+* /api/available/chains/ GET
+* /api/available/filters/ GET
 
 ## >>> Hosts <<<
 
@@ -83,7 +114,7 @@ Response
 ```
 
 ## >>> Modules <<<
-#### GET /api/modules/available/
+#### GET /api/available/modules/
 Response
 ```json
 {
@@ -141,7 +172,7 @@ Response
 ```
 
 ## >>> Rules <<<
-#### GET /api/hosts/[host_id_w_uuid4]/rules
+#### GET /api/hosts/[uuid4_host_id]/rules/
 Response
 ```json
 {
