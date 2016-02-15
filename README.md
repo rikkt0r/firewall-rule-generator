@@ -82,8 +82,8 @@ Response
 {}
 ```
 
-## >>> Rules <<<
-#### GET /api/rules/modules-available
+## >>> Modules <<<
+#### GET /api/modules/available/
 Response
 ```json
 {
@@ -139,6 +139,8 @@ Response
   ]
 }
 ```
+
+## >>> Rules <<<
 #### GET /api/hosts/[host_id_w_uuid4]/rules
 Response
 ```json
