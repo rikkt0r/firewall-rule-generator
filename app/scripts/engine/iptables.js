@@ -2,7 +2,7 @@ var iptables = (function(window, document, undefined){
 
     var Exception = Error;
 
-    function Factory(){
+    this.Factory = function(rule){
         this.create = function(type) {
             switch(type){
               case 'rule':

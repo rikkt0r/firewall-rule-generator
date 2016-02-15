@@ -1,0 +1,36 @@
+<style type="text/css">
+    #mynetwork {
+        height: 634px;
+        border: 1px solid lightgray;
+    }
+
+
+</style>
+<table class="table table-striped table-hover">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Ip Address</th>
+        <th>Network</th>
+        <th>Interfaces</th>
+        <th>Rules</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="host in hosts">
+        <td>{{ host.id }}</td>
+        <td>{{ host.name}}</td>
+        <td>{{ host.ip.address}}</td>
+        <td>{{ host.ip.network}}</td>
+        <td><span ng-repeat="interface in host.interfaces">{{interface.name}}, </span></td>
+        <td>{{ host.rules.length}}</td>
+        <td>
+            <a ui-sref="hosts-show({ id: host.id})" data-toggle="tooltip" title="Show">
+                <i class="fa fa-search"></i>
+            </a>
+        </td>
+    </tr>
+    </tbody>
+</table>

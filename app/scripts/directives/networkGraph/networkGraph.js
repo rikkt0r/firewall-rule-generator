@@ -6,13 +6,12 @@ angular
 function networkGraph() {
     var directive = {
         restrict: 'E',
-        templateUrl: 'scripts/directives/network-graph.html',
+        templateUrl: 'scripts/directives/networkGraph/network-graph.html',
         scope: {
             hosts: '='
         },
         controller: networkGraphCtrl,
         controllerAs: 'vm',
-        bindToController: true
     };
 
 
@@ -30,40 +29,40 @@ function networkGraphCtrl($scope) {
     var EDGE_LENGTH_MAIN = 150;
     var EDGE_LENGTH_SUB = 50;
 
-    var tmpHosts = [
-        {
-            id: 1,
-            ip: {
-                address: '192.168.0.1',
-                mask: '255.255.255.0',
-                network: '192.168.0.1'
-            },
-            name: 'host 1'
-        }, {
-            id: 2,
-            ip: {
-                address: '192.168.0.2',
-                mask: '255.255.255.0',
-                network: '192.168.0.1'
-            },
-            name: 'host 2'
-        }, {
-            id: 3,
-            ip: {
-                address: '192.168.0.3',
-                mask: '255.255.255.0',
-                network: '192.168.0.1'
-            },
-            name: 'host 3'
-        },
-    ];
-    $scope.hosts = localStorage.setItem('hosts', JSON.stringify(tmpHosts));
-
-    try {
-        $scope.hosts = JSON.parse(localStorage.getItem('hosts'));
-    } catch (e) {
-        $scope.hosts = {};
-    }
+    //var tmpHosts = [
+    //    {
+    //        id: 1,
+    //        ip: {
+    //            address: '192.168.0.1',
+    //            mask: '255.255.255.0',
+    //            network: '192.168.0.1'
+    //        },
+    //        name: 'host 1'
+    //    }, {
+    //        id: 2,
+    //        ip: {
+    //            address: '192.168.0.2',
+    //            mask: '255.255.255.0',
+    //            network: '192.168.0.1'
+    //        },
+    //        name: 'host 2'
+    //    }, {
+    //        id: 3,
+    //        ip: {
+    //            address: '192.168.0.3',
+    //            mask: '255.255.255.0',
+    //            network: '192.168.0.1'
+    //        },
+    //        name: 'host 3'
+    //    },
+    //];
+    //$scope.hosts = localStorage.setItem('hosts', JSON.stringify(tmpHosts));
+    //
+    //try {
+    //    $scope.hosts = JSON.parse(localStorage.getItem('hosts'));
+    //} catch (e) {
+    //    $scope.hosts = {};
+    //}
 
     var getNodes = function (hosts) {
 
@@ -71,7 +70,7 @@ function networkGraphCtrl($scope) {
 
         var nodes = [];
 
-        function addToNodes(element, index, array) {
+        function addToNodes(element) {
             var node = {
                 id: element.id,
                 label: element.name,
@@ -97,23 +96,23 @@ function networkGraphCtrl($scope) {
 
     nodes = getNodes($scope.hosts);
 
-    edges.push({from: 1, to: 2, length: EDGE_LENGTH_MAIN});
-    edges.push({from: 1, to: 3, length: EDGE_LENGTH_MAIN});
-
-    for (var i = 4; i <= 7; i++) {
-        //nodes.push({id: i, label: 'Computer', image: DIR + 'host1.png', shape: 'image'});
-        //edges.push({from: 2, to: i, length: EDGE_LENGTH_SUB});
-    }
-
-    edges.push({from: 2, to: 101, length: EDGE_LENGTH_SUB});
-    edges.push({from: 3, to: 102, length: EDGE_LENGTH_SUB});
-    edges.push({from: 1, to: 103, length: EDGE_LENGTH_SUB});
-    edges.push({from: 1, to: 104, length: EDGE_LENGTH_SUB});
-
-    for (var i = 200; i <= 201; i++) {
-        nodes.push({id: i, label: 'Smartphone', image: DIR + 'host1.png', shape: 'image'});
-        edges.push({from: 3, to: i, length: EDGE_LENGTH_SUB});
-    }
+    //edges.push({from: 1, to: 2, length: EDGE_LENGTH_MAIN});
+    //edges.push({from: 1, to: 3, length: EDGE_LENGTH_MAIN});
+    //
+    //for (var i = 4; i <= 7; i++) {
+    //    //nodes.push({id: i, label: 'Computer', image: DIR + 'host1.png', shape: 'image'});
+    //    //edges.push({from: 2, to: i, length: EDGE_LENGTH_SUB});
+    //}
+    //
+    //edges.push({from: 2, to: 101, length: EDGE_LENGTH_SUB});
+    //edges.push({from: 3, to: 102, length: EDGE_LENGTH_SUB});
+    //edges.push({from: 1, to: 103, length: EDGE_LENGTH_SUB});
+    //edges.push({from: 1, to: 104, length: EDGE_LENGTH_SUB});
+    //
+    //for (var i = 200; i <= 201; i++) {
+    //    nodes.push({id: i, label: 'Smartphone', image: DIR + 'host1.png', shape: 'image'});
+    //    edges.push({from: 3, to: i, length: EDGE_LENGTH_SUB});
+    //}
 
     $scope.nodes = nodes;
     $scope.edges = edges;

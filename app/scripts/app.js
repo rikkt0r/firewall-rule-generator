@@ -78,6 +78,19 @@ angular
                 parent: 'hosts',
                 templateUrl: 'views/hosts/graph.html',
                 controller: 'HostsCtrl'
+            }).state('hosts-show', {
+                url: '/:id',
+                parent: 'hosts',
+                templateUrl: 'views/hosts/show.html',
+                controller: 'HostShowCtrl'
+            }).state('hosts-add', {
+                url: '/add',
+                parent: 'hosts',
+                templateUrl: 'views/hosts/add.html',
+                controller: 'HostAddCtrl'
             });
 
-    });
+    }).constant("apiConfig", {
+    "url": "http://localhost",
+    "port": "5000"
+});
