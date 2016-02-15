@@ -10,8 +10,6 @@
 * /api/hosts/[uuid4_host_id]/rules/ POST
 * /api/hosts/[uuid4_host_id]/rules/[uuid4_rule_id]/ PUT
 * /api/hosts/[uuid4_host_id]/rules/[uuid4_rule_id]/ DELETE
-* /api/available/chains/ GET
-* /api/available/filters/ GET
 
 #### front:
 * kopiowanie reguły jako nowa
@@ -53,15 +51,12 @@ python server/manage.py runserver 5000
 
 * /api/available/modules/ GET
 * /api/available/chains/ GET
-* /api/available/filters/ GET
+* /api/available/tables/ GET
 
 ## >>> Hosts <<<
 
 #### GET /api/hosts/
-Request
-```json
-{}
-```
+Request, no data
 
 Response
 ```json
@@ -129,17 +124,17 @@ Response
 ```
 
 #### DELETE /api/hosts/[uuid4_host_id]/
-Request
-```json
-{}
-```
+Request, no data
+
 Response
 ```json
 {}
 ```
 
-## >>> Modules <<<
+## >>> Available <<<
 #### GET /api/available/modules/
+Request, no data
+
 Response
 ```json
 {
@@ -196,8 +191,40 @@ Response
 }
 ```
 
+#### GET /api/available/chains/
+Request, no data
+
+Response (if advanced==true, only available in advanced mode),
+no custom chains in this revision.
+```json
+{
+  "chains": [
+    {"sys": "INPUT", "advanced": false},
+    {"sys": "OUTPUT", "advanced": false},
+    {"sys": "FORWARDING", "advanced": true},
+    {"sys": "PREROUTING", "advanced": true},
+    {"sys": "POSTROUTING", "advanced": true},
+}
+```
+#### GET /api/available/tables/
+Request, no data
+
+Response
+```json
+{
+  "tables": [
+    {"sys": "filter", "advanced": false},
+    {"sys": "mangle", "advanced": true},
+    {"sys": "nat", "advanced": true},
+    {"sys": "raw", "advanced": true},
+    {"sys": "security", "advanced": true},
+}
+```
+
 ## >>> Rules <<<
 #### GET /api/hosts/[uuid4_host_id]/rules/
+Request, no data
+
 Response
 ```json
 {
