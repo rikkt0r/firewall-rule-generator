@@ -44,7 +44,7 @@ class ModuleParams(me.EmbeddedDocument):
     value = me.StringField(min_length=1, max_length=60)
 
 
-class Module(me.EmbeddedDocument):
+class Module(me.Document):
     sys = me.StringField(max_length=40)
     desc = me.StringField(max_length=100)
     params_available = me.ListField(me.EmbeddedDocumentField(ModuleParams))
@@ -83,6 +83,13 @@ class Rule(me.EmbeddedDocument):
         (2, 'bytes'),
         (3, 'pkts bytes')
     )
+
+    ACTIONS = (
+        (0, 'ACCEPT'),
+        (1, 'DROP'),
+        (2, 'REJECT'),
+    )
+
     table = me.IntField(choices=TABLES, default=0)
     chain = me.IntField(choices=CHAINS, required=True)
     protocol = me.IntField(choices=PROTOCOLS)
@@ -99,7 +106,8 @@ class Rule(me.EmbeddedDocument):
     interface_out_reverse = me.BooleanField(default=False)
     fragment = me.IntField(choices=FRAGMENT, default=0)
     counter = me.IntField(choices=COUNTERS, default=0)
-    modules = me.ListField(me.EmbeddedDocumentField(Module))
+    modules = me.ListField(me.ReferenceField(Module))
+    action = me.IntField(choices=ACTIONS, default=0)
 
     def validate(self, clean=True):
         validate_netmask(self.source_mask)
