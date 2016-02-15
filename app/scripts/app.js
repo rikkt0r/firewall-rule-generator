@@ -11,7 +11,9 @@
 angular
     .module('yapp', [
         'ui.router',
-        'ngAnimate'
+        'ngAnimate',
+        'validation',
+        'validation.rule'
     ])
     .config(function ($stateProvider, $urlRouterProvider) {
 

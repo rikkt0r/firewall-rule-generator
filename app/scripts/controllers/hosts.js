@@ -44,42 +44,22 @@ controller('HostAddCtrl', function ($scope, $http, $location, $state, $statePara
         rules: ''
     };
 
-    $scope.interfaces = [
-        {
-            'sys': 'eth0',
-            'ip': '192.168.0.1',
-            netmask: '255.255.255.0',
-            desc: 'desc1'
-        },
-        {
-            'sys': 'eth2',
-            'ip': '192.168.0.2',
-            netmask: '255.255.255.0',
-            desc: 'desc2'
-        },
-        {
-            'sys': 'eth3',
-            'ip': '192.168.0.3',
-            netmask: '255.255.255.0',
-            desc: 'desc3'
-        }
-    ]
-
     $scope.tmpInterface = {
-        'sys': 'eth3',
-        'ip': '192.168.0.3',
-        netmask: '255.255.255.0',
-        desc: 'desc3'
+        'sys': '',
+        'ip': '',
+        netmask: '',
+        desc: ''
     }
 
     $scope.submit = function () {
+
         $http({
             method: 'POST',
             url: 'localhost:5000/api/hosts'
         }).then(function successCallback(response) {
-            $location.path('/hosts/list')
+            //$location.path('/hosts/list')
         }, function errorCallback(response) {
-            $location.path('/hosts/list')
+            //$location.path('/hosts/list')
         });
     }
 
@@ -88,6 +68,7 @@ controller('HostAddCtrl', function ($scope, $http, $location, $state, $statePara
     }
 
     $scope.addInterface = function () {
+        debugger;
         $scope.host.interfaces.push($scope.tmpInterface)
         $scope.tmpInterface = {
             'sys': '',
