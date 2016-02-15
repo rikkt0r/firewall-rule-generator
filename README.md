@@ -6,8 +6,6 @@
 ## TODO:
 
 #### readme api:
-* /api/hosts/[uuid4_host_id]/ PUT
-* /api/hosts/[uuid4_host_id]/ DELETE
 
 * /api/hosts/[uuid4_host_id]/rules/ POST
 * /api/hosts/[uuid4_host_id]/rules/[uuid4_rule_id]/ PUT
@@ -102,12 +100,39 @@ Request
   "htype": 3,
   "template_id": 1,
   "interfaces": [
-    {"sys": "eth0", "desc": "gigabitowy realtek", "ip": "12.11.10.1", "netmask": 24},
-    {"sys": "wlan0", "desc": "bezprzewodowe cudo", "ip": "12.11.9.1", "netmask": 24},
+    {"sys": "eth0", "desc": "gigabit realtek", "ip": "12.11.10.1", "netmask": 24},
+    {"sys": "wlan0", "desc": "wireless atheros 2k", "ip": "12.11.9.1", "netmask": 24},
   ]
 }
 ```
+Response
+```json
+{}
+```
 
+#### PUT /api/hosts/[uuid4_host_id]/
+Request, any field from POST, ex.
+```json
+{
+  "name": "Another host name"
+}
+```
+or
+```json
+{
+  "interfaces": [{"sys": "brt0", "desc": "fastethernet intel", "ip": "12.11.10.1", "netmask": 24},]
+}
+```
+Response
+```json
+{}
+```
+
+#### DELETE /api/hosts/[uuid4_host_id]/
+Request
+```json
+{}
+```
 Response
 ```json
 {}
