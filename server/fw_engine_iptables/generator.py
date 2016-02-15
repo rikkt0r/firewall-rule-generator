@@ -50,6 +50,8 @@ class Generator(AbstractGenerator):
         for module in rule.modules:
             line += self.generate_for_rule_module(module)
 
+        line += " -j %s" % rule.get_action_display()
+
         return line
 
     def generate(self, host_id):

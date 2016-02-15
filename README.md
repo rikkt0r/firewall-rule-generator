@@ -167,7 +167,8 @@ Response
         {"sys": "state", "params_set": [
           {"sys": "state", "value": "RELATED,ESTABLISHED"},
         ]},
-      ]
+      ],
+      "action": "DROP"
     }
   ]
 }
