@@ -1,6 +1,6 @@
 # coding: utf-8
 from fw_api.views import AbstractRestApi
-from fw_engine.models import Rule, Module, ModuleParam
+from fw_engine.models import Rule, Module, ModuleParam, Host
 
 
 def reverse_choice(tpl, choice):
@@ -53,10 +53,14 @@ class RulesApi(AbstractRestApi):
         return self.send_json({'implementation': 'needed'})
 
     def post(self, request, *args, **kwargs):
-        data = self.get_json(request)
+        host_oid = kwargs.get('host_oid', None)
+        host = Host.objects.get(pk=host_oid)
 
+        data = self.get_json(request)
         rule = Rule()
         oid = self.rule_add_or_edit(rule, data, add=True)
+        host.rules.append(rule)
+        host.save()
         return self.send_json({"id": oid})
 
     def put(self, request, *args, **kwargs):

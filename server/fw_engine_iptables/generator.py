@@ -8,7 +8,7 @@ class Generator(AbstractGenerator):
 
         line = " -m %s" % module.sys
 
-        for param in module.params_set:
+        for param in module.params:
             line += " --%s %s" % (param.sys, param.value)
 
         return line
@@ -57,20 +57,14 @@ class Generator(AbstractGenerator):
                 line += " --log-level %d" % rule.log_level
 
             if rule.log_prefix is not None:
-                line += " --log-prefix %s" % rule.log_prefix
+                line += " --log-prefix \"%s\"" % rule.log_prefix
 
         return line
 
     def generate(self, host_id):
 
         lines = []
-
-        host = Host.objects.get(pk=host_id)
-        template_rules = host.template.rules
-        rules = host.rules
-
-        for rule in template_rules:
-            lines.append(self.generate_for_rule(rule))
+        rules = Host.objects.get(pk=host_id).rules
 
         for rule in rules:
             lines.append(self.generate_for_rule(rule))
