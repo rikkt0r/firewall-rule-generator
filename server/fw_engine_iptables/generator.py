@@ -68,4 +68,4 @@ class Generator(AbstractGenerator):
         for rule in rules:
             lines.append(self.generate_for_rule(rule))
 
-        return {"lines": lines}
+        return lines

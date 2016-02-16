@@ -16,7 +16,8 @@
 * ~~/api/hosts/[uuid4_host_id]/ PUT~~
 * ~~/api/hosts/[uuid4_host_id]/ DELETE~~
 
-* /api/hosts/[uuid4_host_id]/generate/ GET (generator gotowy, klepnac api)
+* ~~/api/hosts/[uuid4_host_id]/generate/iptables GET~~
+* ~~/api/hosts/[uuid4_host_id]/generate/puppet GET~~ (nie zdążymy, więc zamockowne)
 * /api/hosts/[uuid4_host_id]/rules/ GET
 * /api/hosts/[uuid4_host_id]/rules/ POST
 * /api/hosts/[uuid4_host_id]/rules/[uuid4_rule_id]/ PUT
@@ -287,7 +288,7 @@ Response
 ```
 
 ## >>> Rules <<<
-#### GET * /api/hosts/[uuid4_host_id]/generate/
+#### GET * /api/hosts/[uuid4_host_id]/generate/iptables/
 Request, no data
 
 Response, list of iptables commands.
