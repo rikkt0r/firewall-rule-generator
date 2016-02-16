@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 from django.core.exceptions import ValidationError
+from django.conf import settings
 import mongoengine as me
 
 from fw_common.validators import validate_ip, validate_netmask
@@ -61,18 +62,9 @@ class Module(me.Document):
 
 
 class Rule(me.EmbeddedDocument):
-    TABLES = (
-        (0, 'filter'),
-        (1, 'raw'),
-        (2, 'mangle'),
-        (3, 'nat'),
-        (4, 'security')
-    )
-
-    CHAINS = (
-        (0, 'INPUT'),
-        (1, 'OUTPUT')
-    )
+    TABLES = [(i, t[0]) for i, t in enumerate(settings.TABLES)]
+    CHAINS = [(i, c[0]) for i, c in enumerate(settings.CHAINS)]
+    ACTIONS = [(i, a[0]) for i, a in enumerate(settings.ACTIONS)]
 
     PROTOCOLS = (
         (0, 'tcp'),
@@ -91,12 +83,6 @@ class Rule(me.EmbeddedDocument):
         (1, 'pkts'),
         (2, 'bytes'),
         (3, 'pkts bytes')
-    )
-
-    ACTIONS = (
-        (0, 'ACCEPT'),
-        (1, 'DROP'),
-        (2, 'REJECT'),
     )
 
     table = me.IntField(choices=TABLES, default=0)

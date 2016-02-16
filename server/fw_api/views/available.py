@@ -1,4 +1,5 @@
 # coding: utf-8
+from django.conf import settings
 from fw_api.views import AbstractRestApi
 from fw_engine.models import Module
 
@@ -36,33 +37,13 @@ class AvailableApi(AbstractRestApi):
         return self.send_json(ret)
 
     def get_chains(self):
-        return self.send_json({
-            "chains": [
-                {"sys": "INPUT", "advanced": False},
-                {"sys": "OUTPUT", "advanced": False},
-                {"sys": "FORWARDING", "advanced": True},
-                {"sys": "PREROUTING", "advanced": True},
-                {"sys": "POSTROUTING", "advanced": True},
-            ]
-        })
+        return self.send_json({"chains": [{"sys": c[0], "advanced": c[1]} for c in settings.CHAINS]})
 
     def get_tables(self):
-        return self.send_json({
-            "tables": [
-                {"sys": "filter", "advanced": False},
-                {"sys": "mangle", "advanced": True},
-                {"sys": "nat", "advanced": True},
-                {"sys": "raw", "advanced": True},
-                {"sys": "security", "advanced": True},
-            ]
-        })
+        return self.send_json({"tables": [{"sys": c[0], "advanced": c[1]} for c in settings.TABLES]})
 
     def get_actions(self):
-        return self.send_json({
-            "actions": [
-                {"sys": "DROP", "advanced": False},
-                {"sys": "ACCEPT", "advanced": False},
-                {"sys": "REJECT", "advanced": False},
-                {"sys": "MASQUERADE", "advanced": True},
-            ]
-        })
+        return self.send_json({"actions": [{"sys": c[0], "advanced": c[1]} for c in settings.ACTIONS]})
+
+    def get_templates(self):
+        return self.send_json({"templates": []})

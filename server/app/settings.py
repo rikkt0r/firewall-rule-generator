@@ -45,3 +45,28 @@ MONGODB_DATABASE_HOST = 'mongodb://iptables:iptables_pass@localhost/%s' % MONGOD
 mongoengine.connect(MONGODB_NAME, host=MONGODB_DATABASE_HOST)
 
 DEBUG = True
+
+
+# val, only_advanced
+CHAINS = (
+    ('INPUT', False),
+    ('OUTPUT', False),
+    ('FORWARDING', True),
+    ('PREROUTING', True),
+    ('POSTROUTING', True),
+)
+
+TABLES = (
+    ('filter', False),
+    ('raw', True),
+    ('mangle', True),
+    ('nat', True),
+    ('security', True)
+)
+
+ACTIONS = (
+    ('ACCEPT', False),
+    ('DROP', False),
+    ('REJECT', False),
+    ('MASQUERADE', True)
+)
