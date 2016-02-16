@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from django.views.generic import View
 from fw_common.exceptions import FwException
 
-__all__ = ['modules', 'hosts', 'rules']
+__all__ = ['available', 'hosts', 'rules']
 
 
 class AbstractRestApi(View):
