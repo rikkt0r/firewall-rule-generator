@@ -1,0 +1,75 @@
+<div class="host-show">
+    <div class="row">
+        <div class="jumbotron">
+            <h2>Hosts {{ host.name }}</h2>
+            <div class="row">
+                <div class="col-lg-6">
+                    <h4>Details</h4>
+                    <dl class="details row">
+                        <div class="col-lg-4">
+                            <dt>Name</dt>
+                            <dd>{{ host.name }}</dd>
+
+                            <dt>Type</dt>
+                            <dd>{{ host.htype }}</dd>
+                        </div>
+                        <div class="col-lg-8">
+                            <dt>Description</dt>
+                            <dd>{{ host.desc }}</dd>
+                        </div>
+                    </dl>
+                </div>
+                <div class="col-lg-6">
+                    <h4>Interfaces</h4>
+                    <table class="table interfaces table-striped">
+                        <thead>
+                        <tr>
+                            <th>IP</th>
+                            <th>Net mask</th>
+                            <th>System name</th>
+                            <th>Description</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="interface in host.interfaces">
+                            <td>{{interface.ip}}</td>
+                            <td>{{interface.netmask}}</td>
+                            <td>{{interface.sys}}</td>
+                            <td>{{interface.desc}}</td>
+                            <td>
+                                <i ng-click="removeInterface($index)" class="fa fa-times"></i>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <h4>Rules</h4>
+                <table class="table interfaces table-striped">
+                    <thead>
+                    <tr>
+                        <th>IP</th>
+                        <th>Net mask</th>
+                        <th>System name</th>
+                        <th>Description</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="interface in host.interfaces">
+                        <td>{{interface.ip}}</td>
+                        <td>{{interface.netmask}}</td>
+                        <td>{{interface.sys}}</td>
+                        <td>{{interface.desc}}</td>
+                        <td>
+                            <i ng-click="removeInterface($index)" class="fa fa-times"></i>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

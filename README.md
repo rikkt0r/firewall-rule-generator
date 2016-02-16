@@ -5,7 +5,15 @@
 
 ## TODO:
 
-* everything
+#### front:
+* kopiowanie reguły jako nowa
+* modyfikowanie reguly
+* drag&drop reguł by był spoko, ale raczej po prostu klepnąć jakieś strzałki up/down do zmiany kolejnosci
+
+#### back:
+* prawie cale api
+* ogarniecie, skad leca wyjatki mongoengine albo zmienic biblioteke
+* templejty
 
 ### Run:
 
@@ -26,13 +34,30 @@ python server/manage.py runserver 5000
 
 # API
 
+## W skrocie
+
+* /api/hosts/ GET
+* /api/hosts/[uuid4_host_id]/ POST
+* /api/hosts/[uuid4_host_id]/ PUT
+* /api/hosts/[uuid4_host_id]/ DELETE
+
+* /api/hosts/[uuid4_host_id]/rules/ POST
+* /api/hosts/[uuid4_host_id]/rules/[uuid4_rule_id]/ PUT
+* /api/hosts/[uuid4_host_id]/rules/[uuid4_rule_id]/ DELETE
+* /api/hosts/[uuid4_host_id]/rules/[uuid4_rule_id]/up/ POST (yup, we are implementing that..)
+* /api/hosts/[uuid4_host_id]/rules/[uuid4_rule_id]/down/ POST
+
+* /api/available/modules/ GET
+* /api/available/chains/ GET
+* /api/available/tables/ GET
+* /api/available/actions/ GET
+* /api/available/templates/ GET
+* /api/available/templates/[uuid4_template_id]/ GET (chyba, ze od razu w tym wyzej ladowac reguly?)
+
 ## >>> Hosts <<<
 
 #### GET /api/hosts/
-Request
-```json
-{}
-```
+Request, no data
 
 Response
 ```json
@@ -71,19 +96,42 @@ Request
   "htype": 3,
   "template_id": 1,
   "interfaces": [
-    {"sys": "eth0", "desc": "gigabitowy realtek", "ip": "12.11.10.1", "netmask": 24},
-    {"sys": "wlan0", "desc": "bezprzewodowe cudo", "ip": "12.11.9.1", "netmask": 24},
+    {"sys": "eth0", "desc": "gigabit realtek", "ip": "12.11.10.1", "netmask": 24},
+    {"sys": "wlan0", "desc": "wireless atheros 2k", "ip": "12.11.9.1", "netmask": 24},
   ]
 }
 ```
-
 Response
 ```json
-{}
+{
+  "id": "3fde83f0-3c57-42a0-bad6-7573e1313317"
+}
 ```
 
-## >>> Modules <<<
-#### GET /api/modules/available/
+#### PUT /api/hosts/[uuid4_host_id]/
+Request, any field from POST, ex.
+```json
+{
+  "name": "Another host name"
+}
+```
+or
+```json
+{
+  "interfaces": [{"sys": "brt0", "desc": "fastethernet intel", "ip": "12.11.10.1", "netmask": 24},]
+}
+```
+Response, no data
+
+#### DELETE /api/hosts/[uuid4_host_id]/
+Request, no data
+
+Response, no data
+
+## >>> Available <<<
+#### GET /api/available/modules/
+Request, no data
+
 Response
 ```json
 {
@@ -140,13 +188,92 @@ Response
 }
 ```
 
+#### GET /api/available/chains/
+Request, no data
+
+Response (if advanced==true, only available in advanced mode),
+no custom chains in this revision.
+```json
+{
+  "chains": [
+    {"sys": "INPUT", "advanced": false},
+    {"sys": "OUTPUT", "advanced": false},
+    {"sys": "FORWARDING", "advanced": true},
+    {"sys": "PREROUTING", "advanced": true},
+    {"sys": "POSTROUTING", "advanced": true},
+  ]
+}
+```
+#### GET /api/available/tables/
+Request, no data
+
+Response
+```json
+{
+  "tables": [
+    {"sys": "filter", "advanced": false},
+    {"sys": "mangle", "advanced": true},
+    {"sys": "nat", "advanced": true},
+    {"sys": "raw", "advanced": true},
+    {"sys": "security", "advanced": true},
+  ]
+}
+```
+
+#### GET /api/available/actions/
+Request, no data
+
+Response
+```json
+{
+  "actions": [
+    {"sys": "DROP", "advanced": false},
+    {"sys": "ACCEPT", "advanced": false},
+    {"sys": "REJECT", "advanced": false},
+    {"sys": "MASQUERADE", "advanced": true},
+  ]
+}
+```
+
+#### GET /api/available/templates/
+Request, no data
+
+Response
+```json
+{
+  "templates": [
+    {"id": "bc06c2e6-ccb9-481b-9363-2e20b0a46258", "name": "All-negation", "desc": "All packets on input/output dropped by default"},
+    {"id": "5837272e-80cc-4534-a10b-fb4ace090813", "name": "All-ok", "desc": "All packets on input/output accepted by default"},
+  ]
+}
+```
+
+
+#### GET /api/available/templates/[uuid4_template_id]/
+Request, no data
+
+Response
+```json
+{
+  "id": "bc06c2e6-ccb9-481b-9363-2e20b0a46258",
+  "name": "All-negation",
+  "desc": "All packets on input/output dropped by default",
+  "ruleset": [
+    "rules in here, like in GET below"
+  ]
+}
+```
+
 ## >>> Rules <<<
-#### GET /api/hosts/[host_id_w_uuid4]/rules
+#### GET /api/hosts/[uuid4_host_id]/rules/
+Request, no data
+
 Response
 ```json
 {
   "rules": [
     {
+      "id": "ca00049a-8348-4a53-b044-de0047a5de22",
       "table": "filter",
       "chain": "INPUT",
       "protocol": "tcp",
@@ -173,3 +300,51 @@ Response
   ]
 }
 ```
+
+#### POST /api/hosts/[uuid4_host_id]/rules/
+Request, any field from GET above(excluding id), table, chain and action are required
+```json
+{
+  "table": "filter",
+  "chain": "INPUT",
+  "protocol": "tcp",
+  "modules": [
+    {"sys": "state", "params_set": [
+      {"sys": "state", "value": "RELATED,ESTABLISHED"},
+    ]},
+  ],
+  "action": "DROP"
+}
+```
+
+Response
+```json
+{
+    "id": "69a5d1d7-1d29-4b07-a6b0-af8034e7849d"
+}
+```
+
+#### PUT /api/hosts/[uuid4_host_id]/rules/[uuid4_rule_id]/
+Request, any field from GET above(excluding id)
+```json
+{
+  "protocol_reverse": true,
+}
+```
+
+Response, no data
+
+#### DELETE /api/hosts/[uuid4_host_id]/rules/[uuid4_rule_id]/
+Request, no data
+
+Response, no data
+
+#### POST /api/hosts/[uuid4_host_id]/rules/[uuid4_rule_id]/up/
+Request, no data
+
+Response, no data
+
+#### POST /api/hosts/[uuid4_host_id]/rules/[uuid4_rule_id]/down/
+Request, no data
+
+Response, no data

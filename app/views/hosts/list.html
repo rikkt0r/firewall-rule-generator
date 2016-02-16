@@ -1,1 +1,15 @@
-list here
+<div id="hosts-graph">
+    <div class="row">
+        <div class="jumbotron">
+            <div clas="row">
+                <div class="col-lg-8">
+                    <h2>Hosts</h2>
+                </div>
+                <div class="col-lg-4">
+                    <button ng-click="go('/hosts/add')" class="btn btn-primary btn-outline btn-rounded pull-right">Add new</button>
+                </div>
+            </div>
+            <network-list hosts="hosts"></network-list>
+        </div>
+    </div>
+</div>

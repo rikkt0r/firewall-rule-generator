@@ -9,11 +9,13 @@
 // Pages
 @import "pages/addnew.less";
 @import "pages/dashboard.less";
+@import "pages/hosts.less";
 
 // Widgets and Effects
 @import "widgets/input-underline.less";
 @import "../../bower_components/bootstrap-btn-outline-rounded/index.less";
 @import "transitions/all.less";
+@import "../../bower_components/font-awesome/css/font-awesome.min.css";
 
 // Other
 .browsehappy {
@@ -25,4 +27,13 @@
 
 html,body {
 	overflow: hidden;
+}
+
+.has-error, .ng-invalid.ng-dirty, .validation-invalid{
+  color: rgba(255, 56, 47, 0.76);
+  border-color: rgba(255, 56, 47, 0.76);
+}
+
+.interface{
+  color: #202020
 }
