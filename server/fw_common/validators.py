@@ -19,5 +19,5 @@ def validate_ip(address):
 
 
 def validate_netmask(netmask):
-    if not 32 >= netmask >= 0:
+    if netmask is not None and not 32 >= netmask >= 0:
         raise ValidationError('Netmask is not valid')

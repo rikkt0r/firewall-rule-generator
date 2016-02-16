@@ -362,7 +362,7 @@ Response
       "fragment": null,
       "counter": "bytes",
       "modules": [
-        {"sys": "state", "params_set": [
+        {"sys": "state", "params": [
           {"sys": "state", "value": "RELATED,ESTABLISHED"},
         ]},
       ],
@@ -382,7 +382,7 @@ Request, any field from GET above(excluding id), table, chain and action are req
   "chain": "INPUT",
   "protocol": "tcp",
   "modules": [
-    {"sys": "state", "params_set": [
+    {"sys": "state", "params": [
       {"sys": "state", "value": "RELATED,ESTABLISHED"},
     ]},
   ],

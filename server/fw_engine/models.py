@@ -27,7 +27,7 @@ class Interface(me.EmbeddedDocument):
 class Template(me.Document):
     name = me.StringField(max_length=100)
     desc = me.StringField(max_length=300)
-    ruleset = me.SortedListField(me.EmbeddedDocumentField('Rule'))
+    rules = me.SortedListField(me.ReferenceField('Rule'))
 
     def __repr__(self):
         return "Template <%s>" % self.name
@@ -48,37 +48,40 @@ class Host(me.Document):
     htype = me.IntField(choices=TYPES, default=0)
     interfaces = me.ListField(me.EmbeddedDocumentField(Interface))
     template = me.ReferenceField(Template)
-    rules = me.SortedListField(me.EmbeddedDocumentField('Rule'))
+    rules = me.SortedListField(me.ReferenceField('Rule'))
 
     def __repr__(self):
         return "Host <%s>" % self.name
 
 
-class ModuleParams(me.EmbeddedDocument):
+class ModuleAvailableParams(me.EmbeddedDocument):
     sys = me.StringField(max_length=16, required=True)
     desc = me.StringField(max_length=120)
-    value = me.StringField(min_length=1, max_length=60)
 
 
 class ModuleAvailable(me.Document):
     sys = me.StringField(max_length=40)
     desc = me.StringField(max_length=100)
-    params = me.ListField(me.EmbeddedDocumentField(ModuleParams))
+    params = me.ListField(me.EmbeddedDocumentField(ModuleAvailableParams))
 
     def __repr__(self):
         return "ModuleAvailable <%s>" % self.sys
 
 
+class ModuleParams(me.EmbeddedDocument):
+    sys = me.StringField(max_length=16, required=True)
+    value = me.StringField(min_length=1, max_length=60)
+
+
 class Module(me.Document):
     sys = me.StringField(max_length=40)
-    desc = me.StringField(max_length=100)
     params = me.ListField(me.EmbeddedDocumentField(ModuleParams))
 
     def __repr__(self):
         return "Module <%s>" % self.sys
 
 
-class Rule(me.EmbeddedDocument):
+class Rule(me.Document):
     TABLES = [(i, t[0]) for i, t in enumerate(settings.TABLES)]
     CHAINS = [(i, c[0]) for i, c in enumerate(settings.CHAINS)]
     ACTIONS = [(i, a[0]) for i, a in enumerate(settings.ACTIONS)]
@@ -105,7 +108,6 @@ class Rule(me.EmbeddedDocument):
 
     FIELDS = ('protocol_reverse', 'source', 'source_mask', 'source_reverse', 'destination', 'destination_mask',
               'destination_reverse', 'interface_in', 'interface_in_reverse', 'fragment', 'log_level', 'log_prefix')
-
     # table, chain, protocol, counter, modules, action
 
     table = me.IntField(choices=TABLES, default=0, required=True)
@@ -132,10 +134,20 @@ class Rule(me.EmbeddedDocument):
     def validate(self, clean=True):
         validate_netmask(self.source_mask)
         validate_netmask(self.destination_mask)
+        if self.protocol == 2:
+            for m in self.modules:
+                if m.sys == 'multiport':
+                    raise ValidationError("ICMP is not compatible with multiport")
         super(Rule, self).validate(clean)
+
+    def __deepcopy__(self):
+        fields = self.FIELDS + ('table', 'chain', 'protocol', 'counter', 'action')
+        rule = Rule()
+        for f in fields:
+            setattr(rule, f, getattr(self, f))
+        for m in self.modules:
+            rule.modules.append(m)
+        return rule
 
     def __repr__(self):
         return "Rule <%s, modules: %d>" % (self.get_action_display(), len(self.modules))
-
-    #     if self.protocol == 2 and Module.objects.get(sys='multiport') in self.modules:
-    #         raise ValidationError("ICMP doesnt provide multiport")
