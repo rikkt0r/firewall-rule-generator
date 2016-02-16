@@ -17,16 +17,15 @@ angular.module('yapp')
                 $scope.hosts = data;
             });
 
-        $scope.go = function ( path ) {
-            $location.path( path );
+        $scope.go = function (path) {
+            $location.path(path);
         };
 
     }).controller('HostShowCtrl', function ($scope, $state, $stateParams, IpTablesService) {
 
-
     $scope.$state = $state;
     var id = $stateParams.id;
-    IpTablesService.getHosts()
+    IpTablesService.getHosts(false)
         .then(function (data) {
             $scope.hosts = data;
             for (var i = 0, len = data.length; i < len; i++) {
@@ -36,6 +35,71 @@ angular.module('yapp')
                 }
             }
         });
+
+    $scope.oldHost = {};
+    $scope.editMode = false;
+    $scope.toggleEdit = function () {
+        if ($scope.editMode === false) {
+            //$scope.oldHost =
+            angular.copy($scope.host, $scope.oldHost);
+        }
+        $scope.editMode = !$scope.editMode;
+    }
+    $scope.cancelEdit = function () {
+        angular.copy($scope.oldHost, $scope.host);
+        $scope.oldHost = {};
+        $scope.editMode = false;
+    }
+
+    $scope.save = function () {
+        IpTablesService.editHost($scope.host.id,$scope.host);
+        $state.go($state.current, {}, {reload: true});
+    }
+
+    $scope.htypeOptions = [
+        {id: 1, value: 'PC/Laptop'},
+        {id: 2, value: 'Server'},
+        {id: 3, value: 'Firewall'},
+        {id: 4, value: 'Other'}
+    ]
+
+    $scope.getHostType = function (val) {
+        switch(val){
+            case 1: return 'PC/Laptop';
+            case 2: return 'Server';
+            case 3: return 'Firewall';
+            default: return 'Other';
+        }
+    }
+    $scope.htypeSelected = function (val) {
+        return val == host.htype;
+    }
+    $scope.removeInterface = function (idx) {
+        $scope.host.interfaces.splice(idx, 1);
+    };
+
+    $scope.newInterface = {
+        ip : '',
+        sys: '',
+        netmask: 0,
+        desc: ''
+    };
+
+    $scope.addInterface = function(){
+        var newInterfaceTmp = {};
+        angular.copy($scope.newInterface, newInterfaceTmp);
+        $scope.newInterface = {
+            ip : '',
+            sys: '',
+            netmask: 0,
+            desc: ''
+        };
+        $scope.host.interfaces.push(newInterfaceTmp);
+    }
+
+    $scope.interfaceValid = function(){
+
+    }
 
 }).config(['$validationProvider', function ($validationProvider) {
 
@@ -110,48 +174,46 @@ angular.module('yapp')
             desc: ''
         };
 
+        IpTablesService.getTemplates().then(
+            function (data) {
+                $scope.templates = data;
+            }
+        )
+        //$scope.templates = [
+        //    {"id": "bc06c2e6-ccb9-481b-9363-2e20b0a46258", "name": "All-negation", "desc": "All packets on input/output dropped by default"},
+        //    {"id": "5837272e-80cc-4534-a10b-fb4ace090813", "name": "All-ok", "desc": "All packets on input/output accepted by default"},
+        //];
+
         var injector = angular.injector(['yapp']);
         var $validationProvider = injector.get('$validation');
 
-        $scope.interfaceForm = {
+        $scope.interface = {
+            checkValid: $validationProvider.checkValid,
             submit: function (form) {
-                $validationProvider.validate(form)
-                    .success(function () {
-                        var obj = {
-                            'sys': $scope.tmpInterface.sys,
-                            'ip': $scope.tmpInterface.ip,
-                            netmask: $scope.tmpInterface.netmask,
-                            desc: $scope.tmpInterface.desc
-                        };
-                        $scope.host.interfaces.push(
-                            obj
-                        );
-                        //$validationProvider.reset($scope.tmpInterface);
-debugger;
-                        //$scope.tmpInterface.sys = '';
-                        //$scope.tmpInterface.ip = '';
-                        //$scope.tmpInterface.netmask = '';
-                        //$scope.tmpInterface.desc = '';
+                //$validationProvider.validate(form)
+                //    .success(
+                //        function(){
+                //            console.log('success');
+                //        }
+                //    )
+                //    .error(
+                //        function(){
+                //            console.log('error');
+                //        }
+                //    );
 
-                    })
-                    .error(function () {
-                        console.log(2)
-                    });
-                //$validationProvider.reset($scope.tmpInterface);
+                $scope.addInterface();
+            },
+            reset: function (form) {
             }
-
-        }
+        };
 
         $scope.submit = function () {
+            $scope.host.htype = $scope.host.htype * 1;
+            IpTablesService.addHost($scope.host).then(function(data){
+                $location.path('/hosts/'+data.id);
+            })
 
-            $http({
-                method: 'POST',
-                url: 'localhost:5000/api/hosts'
-            }).then(function successCallback(response) {
-                //$location.path('/hosts/list')
-            }, function errorCallback(response) {
-                //$location.path('/hosts/list')
-            });
         }
 
         $scope.removeInterface = function (idx) {
@@ -160,10 +222,10 @@ debugger;
 
         $scope.addInterface = function () {
             var obj = {
-                'sys': $scope.tmpInterface.sys,
-                'ip': $scope.tmpInterface.ip,
-                netmask: $scope.tmpInterface.netmask,
-                desc: $scope.tmpInterface.desc
+                'sys': $scope.interface.sys,
+                'ip': $scope.interface.ip,
+                netmask: $scope.interface.netmask * 1,
+                desc: $scope.interface.desc
             };
             $scope.host.interfaces.push(
                 obj

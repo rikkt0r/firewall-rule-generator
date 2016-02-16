@@ -11,14 +11,12 @@ angular
 
             var _getHosts = function (forceReload) {
 
-                if (_hosts.length && !forceReload) {
-                    return _hosts;
-                }
+                forceReload = forceReload ? true : false;
 
-                return $http.get(_prepareUrl('hosts'))
+                return $http.get(_prepareUrl('hosts'),{cache: forceReload})
                     .then(function (response) {
-                            _hosts = response.data;
-                            return response.data
+                            _hosts = response.data.hosts;
+                            return _hosts;
                         },
                         function () {
                             return false;
@@ -42,7 +40,7 @@ angular
             };
 
             var _removeHost = function (id) {
-                return $http.delete(_prepareUrl('hosts') + '/' + id)
+                return $http.delete(_prepareUrl('hosts') + id + '/')
                     .then(function (response) {
                             return response.data
                         },
@@ -52,10 +50,29 @@ angular
             };
 
             var _addHost = function (host) {
-                return $http.({
+                return $http({
                         'method': 'POST',
                         'url': _prepareUrl('hosts'),
                         'data': host
+                    })
+                    .then(function (response) {
+                        return response.data
+                    },
+                        function () {
+                            return false;
+                        });
+            };
+
+            var _editHost = function (id, _data){
+                delete _data.id;
+                _data.htype = _data.htype*1;
+                for(var i = 0; i < _data.interfaces.length; i++){
+                    _data.interfaces[i].netmask = _data.interfaces[i].netmask;
+                }
+                return $http({
+                        'method': 'PUT',
+                        'url': _prepareUrl('hosts') + id + '/',
+                        'data': _data
                     })
                     .then(function (response) {
                         return response.data
@@ -86,7 +103,7 @@ angular
             };
 
             var _getTemplate = function (id) {
-                var url = _prepareUrl('available') + 'template/' + id;
+                var url = _prepareUrl('available') + '/template/' + id;
 
                 return $http.get(url)
                     .then(function (response) {
@@ -109,7 +126,7 @@ angular
                     throw "invalid option";
                 }
 
-                var url = _prepareUrl('available') + part;
+                var url = _prepareUrl('available') + '/' + part;
 
                 return $http.get(url)
                     .then(function (response) {
@@ -123,6 +140,7 @@ angular
             return {
                 getHosts: _getHosts,
                 addHost: _addHost,
+                editHost: _editHost,
                 removeHost: _removeHost,
                 getRules: _getRules,
                 getAvailable: _getAvailable,
