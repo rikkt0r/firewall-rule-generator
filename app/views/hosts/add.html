@@ -1,21 +1,30 @@
 <div id="host-add" class="host-add">
     <div class="row">
         <h1>Add host</h1>
+        {{ host }}
         <div class="jumbotron">
             <form role="form" name="Host" ng-submit="submit()">
                 <div class="form-content">
                     <div class="form-group">
-                        <input validation="required" type="text" class="form-control input-underline input-lg" id="name"
+                        <input validation="required" type="text"
+                               class="form-control input-underline input-lg"
+                               ng-model="host.name"
+                               id="name"
                                placeholder="Name">
                     </div>
 
                     <div class="form-group">
 
-                        <select class="form-control input-underline input-lg">
+                        <select ng-model="host.htype" class="form-control input-underline input-lg">
+                            <option value="" disabled>Select host type</option>
                             <option value="1">PC/Laptop</option>
                             <option value="2">Server</option>
                             <option value="3">Firewall</option>
                             <option value="4">Other</option>
+                        </select>
+                        <select ng-model="host.template" class="form-control input-underline input-lg">
+                            <option value="" disabled>Select prefered template</option>
+                            <option ng-repeat="template in templates" value="template.id">{{template.desc}}</option>
                         </select>
                     </div>
                 </div>
@@ -25,37 +34,88 @@
                 <div class="col-lg-6">
 
                     <h4>Add interface:</h4>
-                    <form name="Interface">
+                    <form name="Interface" id="interface">
+
+                        <!--@todo fix validation&lt;!&ndash;&ndash;&gt;
+
                         <div class="row">
                             <div class="col-lg-8">
-                                <input validator="ip, required" type="text" class="form-control input-underline"
-                                       ng-model="tmpInterface.ip"
-                                       name="ip"
-                                       placeholder="IP">
+                                <input
+                                        validator="ip, required"
+                                        type="text"
+                                        class="form-control input-underline"
+                                        valid-method="submit"
+                                        ng-model="interface.ip"
+                                        name="ip"
+                                        placeholder="IP">
                             </div>
                             <div class="col-lg-4">
-                                <input validator="required" type="text" class="form-control input-underline"
-                                       ng-model="tmpInterface.netmask"
+                                <input type="text" class="form-control input-underline"
+                                       validator="required"
+                                       valid-method="submit"
+                                       ng-model="interface.netmask"
                                        placeholder="Netmask">
                             </div>
                         </div>
-                        <input validator="required" type="text" class="form-control input-underline"
-                               ng-model="tmpInterface.sys"
-                               placeholder="Name">
+                        <input type="text" class="form-control input-underline"
+                               validator="required"
+                               valid-method="submit"
+                               ng-model="interface.sys"
+                               placeholder="Name"
+                        >
 
-                        <input type="text" class="form-control input-underline" ng-model="tmpInterface.desc"
-                               placeholder="Description">
+                        <input type="text" class="form-control input-underline"
+                               ng-model="interface.desc"
+                               valid-method="submit"
+                               placeholder="Description"
+                        >-->
 
-                        <button type="submit" ng-disabled="tmpInterface.checkValid(Interface)"
-                                class="btn btn-outline btn-small btn-rounded pull-right">Add
-                            interface2
-                        </button>
-                        <button type="submit" ng-disabled="tmpInterface.checkValid(Interface)"
-                                ng-click="interfaceForm.submit(Interface)"
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <input
+                                        type="text"
+                                        class="form-control input-underline"
+                                        ng-model="interface.ip"
+                                        name="ip"
+                                        placeholder="IP">
+                            </div>
+                            <div class="col-lg-4">
+                                <!--<input type="text" class="form-control input-underline"
+                                       ng-model="interface.netmask"
+                                       placeholder="Netmask">-->
+                                <select ng-model="interface.netmask"
+                                        placeholder="Netmask"
+                                        class="form-control input-underline">
+                                    <option value="" disabled>Net mask</option>
+                                    <option value="24">24</option>
+                                    <option value="25">25</option>
+                                    <option value="26">26</option>
+                                    <option value="27">27</option>
+                                    <option value="28">28</option>
+                                    <option value="29">29</option>
+                                    <option value="30">30</option>
+                                    <option value="31">31</option>
+                                </select>
+                            </div>
+                        </div>
+                        <input type="text" class="form-control input-underline"
+                               ng-model="interface.sys"
+                               placeholder="Name"
+                        >
+
+                        <input type="text" class="form-control input-underline"
+                               ng-model="interface.desc"
+                               placeholder="Description"
+                        >
+
+
+                        <button type="submit"
+                                ng-disabled="!interface.checkValid(Interface)"
+                                ng-click="interface.submit(Interface)"
                                 class="btn btn-outline btn-small btn-rounded pull-right">Add
                             interface
                         </button>
-                        <button ng-click="interfaceForm.reset(Interface)"></button>
+                        <!--<button ng-click="interface.reset(interface)">Reset</button>-->
                     </form>
                 </div>
                 <div class="col-lg-6">
@@ -88,7 +148,7 @@
             </div>
 
             <div class="form-group button-container">
-                <button type="submit" class="btn btn-primary btn-white btn-outline pull-right btn-lg btn-rounded">
+                <button type="submit" ng-click="submit()" class="btn btn-primary btn-white btn-outline btn-lg btn-rounded">
                     Add Host
                 </button>
             </div>

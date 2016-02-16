@@ -1,21 +1,58 @@
 <div class="host-show">
     <div class="row">
         <div class="jumbotron">
-            <h2>Hosts {{ host.name }}</h2>
             <div class="row">
+                <div class="col-lg-6">
+                    <h2>Hosts {{ host.name }}</h2>
+                </div>
+                <div class="col-lg-6">
+                    <div ng-show="!editMode">
+                        <button ng-click="toggleEdit()"
+                                class="btn btn-outline btn-primary btn-small btn-rounded pull-right">Edit
+                        </button>
+                    </div>
+                    <div ng-show="editMode">
+                        <button ng-click="cancelEdit()"
+                                class="btn btn-outline btn-primary btn-small btn-rounded pull-right">Cancel
+                        </button>
+                        <button ng-click="save()"
+                                class="btn btn-outline btn-primary btn-small btn-rounded pull-right">Save
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+
                 <div class="col-lg-6">
                     <h4>Details</h4>
                     <dl class="details row">
                         <div class="col-lg-4">
                             <dt>Name</dt>
-                            <dd>{{ host.name }}</dd>
+                            <dd ng-show="!editMode">{{ host.name }}</dd>
+                            <dd ng-show="editMode"><input type="text"
+                                                          class="form-control input-underline input-lg"
+                                                          ng-model="host.name"
+                                                          id="name"
+                                                          placeholder="Name"></dd>
 
                             <dt>Type</dt>
-                            <dd>{{ host.htype }}</dd>
+                            <dd ng-show="!editMode">{{ getHostType(host.htype) }}</dd>
+                            <dd ng-show="editMode"><select ng-model="host.htype"
+                                                           class="form-control input-underline input-lg">
+                                <option ng-repeat="option in htypeOptions" value="{{option.id}}"
+                                        ng-selected="option.id==host.htype">{{option.value}}
+                                </option>
+                            </select></dd>
                         </div>
                         <div class="col-lg-8">
                             <dt>Description</dt>
-                            <dd>{{ host.desc }}</dd>
+                            <dd ng-show="!editMode">{{ host.desc }}</dd>
+                            <dd ng-show="editMode"><input type="text"
+                                                          class="form-control input-underline input-lg"
+                                                          ng-model="host.desc"
+                                                          id="desc"
+                                                          placeholder="Description"></dd>
                         </div>
                     </dl>
                 </div>
@@ -28,7 +65,7 @@
                             <th>Net mask</th>
                             <th>System name</th>
                             <th>Description</th>
-                            <th></th>
+                            <th ng-show="editMode"></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -37,8 +74,41 @@
                             <td>{{interface.netmask}}</td>
                             <td>{{interface.sys}}</td>
                             <td>{{interface.desc}}</td>
-                            <td>
+                            <td ng-show="editMode">
                                 <i ng-click="removeInterface($index)" class="fa fa-times"></i>
+                            </td>
+                        </tr>
+                        <tr ng-show="editMode">
+                            <td><input type="text"
+                                       class="form-control input-underline input-lg"
+                                       ng-model="newInterface.ip"
+                                       id="ip"
+                                       placeholder="IP"></td>
+                            <td><select ng-model="newInterface.netmask"
+                                        placeholder="Netmask"
+                                        class="form-control input-underline">
+                                <option value="" disabled>Net mask</option>
+                                <option value="24">24</option>
+                                <option value="25">25</option>
+                                <option value="26">26</option>
+                                <option value="27">27</option>
+                                <option value="28">28</option>
+                                <option value="29">29</option>
+                                <option value="30">30</option>
+                                <option value="31">31</option>
+                            </select></td>
+                            <td><input type="text"
+                                       class="form-control input-underline input-lg"
+                                       ng-model="newInterface.sys"
+                                       id="sys"
+                                       placeholder="System name"></td>
+                            <td><input type="text"
+                                       class="form-control input-underline input-lg"
+                                       ng-model="newInterface.desc"
+                                       id="idesc"
+                                       placeholder="Description"></td>
+                            <td ng-show="editMode">
+                                <i ng-click="addInterface()" class="fa fa-plus"></i>
                             </td>
                         </tr>
                         </tbody>
@@ -54,7 +124,7 @@
                         <th>Net mask</th>
                         <th>System name</th>
                         <th>Description</th>
-                        <th></th>
+                        <th ng-show="editMode"></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -63,7 +133,7 @@
                         <td>{{interface.netmask}}</td>
                         <td>{{interface.sys}}</td>
                         <td>{{interface.desc}}</td>
-                        <td>
+                        <td ng-show="editMode">
                             <i ng-click="removeInterface($index)" class="fa fa-times"></i>
                         </td>
                     </tr>

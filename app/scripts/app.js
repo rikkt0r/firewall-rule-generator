@@ -13,17 +13,18 @@ var app = angular
         'ui.router',
         'ngAnimate',
         'validation',
-        'ui.bootstrap'
+        'ui.bootstrap',
+        'ngSanitize'
     ]);
 
 app.constant(
     "API_CONFIG", {
-        "url": "http://iptables.local",
-        "port": "80",
+        "url": "http://localhost",
+        "port": "5000",
         "endpoints": {
-            "hosts": "?endopoint=hosts",
-            "rules": "?endopoint=rules",
-            "available": "?endopoint=available",
+            "hosts": "/api/hosts/",
+            "rules": "/api/rules",
+            "available": "/api/available",
         }
     }
 );

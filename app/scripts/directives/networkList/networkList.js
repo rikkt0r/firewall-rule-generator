@@ -58,4 +58,13 @@ function networkListCtrl($scope, $uibModal) {
     $scope.toggleAnimation = function () {
         $scope.animationsEnabled = !$scope.animationsEnabled;
     };
+
+    $scope.getType = function(typeId) {
+        switch(typeId){
+            case 1: return 'PC/Laptop';
+            case 2: return 'Server';
+            case 3: return 'Firewall';
+            default: return 'Other';
+        }
+    }
 }

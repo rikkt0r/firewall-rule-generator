@@ -10,20 +10,20 @@
     <thead>
     <tr>
         <th>Name</th>
-        <th>Ip Address</th>
-        <th>Network</th>
+        <th>Type</th>
+        <th>Template</th>
         <th>Interfaces</th>
         <th>Rules</th>
         <th></th>
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="host in hosts">
+    <tr ng-show="hosts.length" ng-repeat="host in hosts">
         <td>{{ host.name}}</td>
-        <td>{{ host.ip.address}}</td>
-        <td>{{ host.ip.network}}</td>
-        <td><span ng-repeat="interface in host.interfaces">{{interface.sys}}, </span></td>
-        <td>{{ host.rules.length}}</td>
+        <td>{{ getType(host.htype)}}</td>
+        <td>{{ host.template ? host.template : '-'}}</td>
+        <td><span ng-repeat="interface in host.interfaces">{{interface.sys}}{{$last ? '' : ', '}}</span></td>
+        <td>{{ host.rules.length ? host.rules.length : 0}}</td>
         <td>
             <a ui-sref="hosts-show({ id: host.id})" uib-tooltip="Details" data-toggle="tooltip" title="Show">
                 <i class="fa fa-eye"></i>
@@ -35,6 +35,7 @@
     </tr>
     </tbody>
 </table>
+<span class="pull-right">total: {{ hosts.length ? hosts.length : 0 }}</span>
 
 <script type="text/ng-template" id="delete-confirmation-modal.html">
     <div class="modal-header">
