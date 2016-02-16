@@ -7,13 +7,13 @@
 
 #### readme api:
 
-* /api/hosts/[uuid4_host_id]/rules/ POST
 * /api/hosts/[uuid4_host_id]/rules/[uuid4_rule_id]/ PUT
 * /api/hosts/[uuid4_host_id]/rules/[uuid4_rule_id]/ DELETE
 
 #### front:
 * kopiowanie reguły jako nowa
 * modyfikowanie reguly
+* drag&drop reguł by był spoko, ale raczej po prostu klepnąć jakieś strzałki up/down do zmiany kolejnosci
 
 #### back:
 * prawie cale api
@@ -48,10 +48,13 @@ python server/manage.py runserver 5000
 * /api/hosts/[uuid4_host_id]/rules/ POST
 * /api/hosts/[uuid4_host_id]/rules/[uuid4_rule_id]/ PUT
 * /api/hosts/[uuid4_host_id]/rules/[uuid4_rule_id]/ DELETE
+* /api/hosts/[uuid4_host_id]/rules/[uuid4_rule_id]/up/ POST (yup, we are implementing that..)
+* /api/hosts/[uuid4_host_id]/rules/[uuid4_rule_id]/down/ POST
 
 * /api/available/modules/ GET
 * /api/available/chains/ GET
 * /api/available/tables/ GET
+* /api/available/actions/ GET
 
 ## >>> Hosts <<<
 
@@ -102,7 +105,9 @@ Request
 ```
 Response
 ```json
-{}
+{
+  "id": "3fde83f0-3c57-42a0-bad6-7573e1313317"
+}
 ```
 
 #### PUT /api/hosts/[uuid4_host_id]/
@@ -118,18 +123,12 @@ or
   "interfaces": [{"sys": "brt0", "desc": "fastethernet intel", "ip": "12.11.10.1", "netmask": 24},]
 }
 ```
-Response
-```json
-{}
-```
+Response, no data
 
 #### DELETE /api/hosts/[uuid4_host_id]/
 Request, no data
 
-Response
-```json
-{}
-```
+Response, no data
 
 ## >>> Available <<<
 #### GET /api/available/modules/
@@ -221,6 +220,20 @@ Response
 }
 ```
 
+#### GET /api/available/actions/
+Request, no data
+
+Response
+```json
+{
+  "tables": [
+    {"sys": "DROP", "advanced": false},
+    {"sys": "ACCEPT", "advanced": false},
+    {"sys": "REJECT", "advanced": false},
+    {"sys": "MASQUERADE", "advanced": true},
+}
+```
+
 ## >>> Rules <<<
 #### GET /api/hosts/[uuid4_host_id]/rules/
 Request, no data
@@ -230,6 +243,7 @@ Response
 {
   "rules": [
     {
+      "id": "ca00049a-8348-4a53-b044-de0047a5de22",
       "table": "filter",
       "chain": "INPUT",
       "protocol": "tcp",
@@ -256,3 +270,51 @@ Response
   ]
 }
 ```
+
+#### POST /api/hosts/[uuid4_host_id]/rules/
+Request, any field from GET above(excluding id), table, chain and action are required
+```json
+{
+  "table": "filter",
+  "chain": "INPUT",
+  "protocol": "tcp",
+  "modules": [
+    {"sys": "state", "params_set": [
+      {"sys": "state", "value": "RELATED,ESTABLISHED"},
+    ]},
+  ],
+  "action": "DROP"
+}
+```
+
+Response
+```json
+{
+    "id": "69a5d1d7-1d29-4b07-a6b0-af8034e7849d"
+}
+```
+
+#### PUT /api/hosts/[uuid4_host_id]/rules/[uuid4_rule_id]/
+Request, any field from GET above(excluding id)
+```json
+{
+  "protocol_reverse": true,
+}
+```
+
+Response, no data
+
+#### DELETE /api/hosts/[uuid4_host_id]/rules/[uuid4_rule_id]/
+Request, no data
+
+Response, no data
+
+#### POST /api/hosts/[uuid4_host_id]/rules/[uuid4_rule_id]/up/
+Request, no data
+
+Response, no data
+
+#### POST /api/hosts/[uuid4_host_id]/rules/[uuid4_rule_id]/down/
+Request, no data
+
+Response, no data
