@@ -68,14 +68,14 @@ class ModuleAvailable(me.Document):
         return "ModuleAvailable <%s>" % self.sys
 
 
-class ModuleParams(me.EmbeddedDocument):
+class ModuleParam(me.EmbeddedDocument):
     sys = me.StringField(max_length=16, required=True)
     value = me.StringField(min_length=1, max_length=60)
 
 
 class Module(me.Document):
     sys = me.StringField(max_length=40)
-    params = me.ListField(me.EmbeddedDocumentField(ModuleParams))
+    params = me.ListField(me.EmbeddedDocumentField(ModuleParam))
 
     def __repr__(self):
         return "Module <%s>" % self.sys

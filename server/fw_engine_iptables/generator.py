@@ -66,7 +66,7 @@ class Generator(AbstractGenerator):
         lines = []
 
         host = Host.objects.get(pk=host_id)
-        template_rules = host.template.ruleset
+        template_rules = host.template.rules
         rules = host.rules
 
         for rule in template_rules:
