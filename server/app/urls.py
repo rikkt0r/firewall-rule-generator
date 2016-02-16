@@ -10,5 +10,5 @@ urlpatterns = [
     url(r'^api/', include('fw_api.urls', namespace='api')),
 ]
 
-handler404 = "ac_common.views.handler404"
-handler500 = "ac_common.views.handler500"
+handler404 = "fw_common.views.handler404"
+handler500 = "fw_common.views.handler500"

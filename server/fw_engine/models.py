@@ -7,6 +7,8 @@ from fw_common.validators import validate_ip, validate_netmask
 
 
 class Interface(me.EmbeddedDocument):
+    FIELDS = ('sys', 'desc', 'ip', 'netmask')
+
     sys = me.StringField(max_length=8, required=True)
     desc = me.StringField(max_length=80)
     ip = me.StringField(max_length=15, required=True)
@@ -25,17 +27,24 @@ class Template(me.Document):
 
 
 class Host(me.Document):
+
+    FIELDS = ('name', 'htype')
+
     TYPES = (
         (0, 'PC/Laptop'),
         (1, 'Server'),
         (2, 'Firewall'),
         (3, 'Other')
     )
+
     name = me.StringField(max_length=100, required=True)
     htype = me.IntField(choices=TYPES, default=0)
     interfaces = me.ListField(me.EmbeddedDocumentField(Interface))
     template = me.ReferenceField(Template)
     rules = me.SortedListField(me.EmbeddedDocumentField('Rule'))
+
+    def __repr__(self):
+        return "Host <%s>" % self.name
 
 
 class ModuleParams(me.EmbeddedDocument):
