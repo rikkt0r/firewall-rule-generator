@@ -8,7 +8,7 @@
  * Controller of yapp
  */
 angular.module('yapp')
-    .controller('HostsCtrl', function ($scope, $state, $stateParams, IpTablesService) {
+    .controller('HostsCtrl', function ($scope, $state, $location, $stateParams, IpTablesService) {
 
         $scope.$state = $state;
 
@@ -16,6 +16,10 @@ angular.module('yapp')
             .then(function (data) {
                 $scope.hosts = data;
             });
+
+        $scope.go = function ( path ) {
+            $location.path( path );
+        };
 
     }).controller('HostShowCtrl', function ($scope, $state, $stateParams, IpTablesService) {
 
@@ -33,49 +37,138 @@ angular.module('yapp')
             }
         });
 
-}).
-controller('HostAddCtrl', function ($scope, $http, $location, $state, $stateParams, IpTablesService) {
+}).config(['$validationProvider', function ($validationProvider) {
 
-    $scope.host = {
-        name: '',
-        htype: '',
-        interfaces: [],
-        template: '',
-        rules: ''
-    };
+        var expression = {
+            required: function (value) {
+                return !!value;
+            },
+            email: /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/,
+            number: /^\d+$/,
+            ip: /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/,
+            minlength: function (value, scope, element, attrs, param) {
+                return value.length >= param;
+            },
+            maxlength: function (value, scope, element, attrs, param) {
+                return value.length <= param;
+            }
+        };
 
-    $scope.tmpInterface = {
-        'sys': '',
-        'ip': '',
-        netmask: '',
-        desc: ''
-    }
+        var defaultMsg = {
+            required: {
+                error: 'This fild is mandatory'
+            },
+            number: {
+                error: 'This should be Number'
+            },
+            ip: {
+                error: 'This should be IPv4 address'
+            },
+            minlength: {
+                error: 'This should be longer'
+            },
+            maxlength: {
+                error: 'This should be shorter'
+            }
+        };
+        $validationProvider.setExpression(expression).setDefaultMsg(defaultMsg);
 
-    $scope.submit = function () {
 
-        $http({
-            method: 'POST',
-            url: 'localhost:5000/api/hosts'
-        }).then(function successCallback(response) {
-            //$location.path('/hosts/list')
-        }, function errorCallback(response) {
-            //$location.path('/hosts/list')
-        });
-    }
+        /**
+         * Range Validation
+         */
+        $validationProvider
+            .setExpression({
+                range: function (value, scope, element, attrs) {
+                    if (value >= parseInt(attrs.min) && value <= parseInt(attrs.max)) {
+                        return value;
+                    }
+                }
+            })
+            .setDefaultMsg({
+                range: {
+                    error: 'Number should between 5 ~ 10',
+                    success: 'good'
+                }
+            });
+    }])
+    .
+    controller('HostAddCtrl', function ($scope, $http, $location, $state, $stateParams, IpTablesService) {
 
-    $scope.removeInterface = function (idx) {
-        $scope.host.interfaces.splice(idx, 1);
-    }
+        $scope.host = {
+            name: '',
+            htype: '',
+            interfaces: [],
+            template: '',
+            rules: ''
+        };
 
-    $scope.addInterface = function () {
-        debugger;
-        $scope.host.interfaces.push($scope.tmpInterface)
         $scope.tmpInterface = {
-            'sys': '',
-            'ip': '',
-            netmask: '',
+            'sys': '1.1.1.1',
+            'ip': '1.1.1.1',
+            netmask: '2',
             desc: ''
-        }
-    }
+        };
 
-});
+        var injector = angular.injector(['yapp']);
+        var $validationProvider = injector.get('$validation');
+
+        $scope.interfaceForm = {
+            submit: function (form) {
+                $validationProvider.validate(form)
+                    .success(function () {
+                        var obj = {
+                            'sys': $scope.tmpInterface.sys,
+                            'ip': $scope.tmpInterface.ip,
+                            netmask: $scope.tmpInterface.netmask,
+                            desc: $scope.tmpInterface.desc
+                        };
+                        $scope.host.interfaces.push(
+                            obj
+                        );
+                        //$validationProvider.reset($scope.tmpInterface);
+debugger;
+                        //$scope.tmpInterface.sys = '';
+                        //$scope.tmpInterface.ip = '';
+                        //$scope.tmpInterface.netmask = '';
+                        //$scope.tmpInterface.desc = '';
+
+                    })
+                    .error(function () {
+                        console.log(2)
+                    });
+                //$validationProvider.reset($scope.tmpInterface);
+            }
+
+        }
+
+        $scope.submit = function () {
+
+            $http({
+                method: 'POST',
+                url: 'localhost:5000/api/hosts'
+            }).then(function successCallback(response) {
+                //$location.path('/hosts/list')
+            }, function errorCallback(response) {
+                //$location.path('/hosts/list')
+            });
+        }
+
+        $scope.removeInterface = function (idx) {
+            $scope.host.interfaces.splice(idx, 1);
+        };
+
+        $scope.addInterface = function () {
+            var obj = {
+                'sys': $scope.tmpInterface.sys,
+                'ip': $scope.tmpInterface.ip,
+                netmask: $scope.tmpInterface.netmask,
+                desc: $scope.tmpInterface.desc
+            };
+            $scope.host.interfaces.push(
+                obj
+            );
+
+        }
+
+    });

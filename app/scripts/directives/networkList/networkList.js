@@ -18,6 +18,44 @@ function networkList() {
 }
 
 /** @ngInject */
-function networkListCtrl($scope, IpTablesService) {
+function networkListCtrl($scope, $uibModal) {
 
+    function ModalInstanceCtrl($scope, IpTablesService, $uibModalInstance, Host) {
+
+        $scope.host = Host;
+
+        $scope.confirm = function () {
+            IpTablesService.removeHost(Host.id)
+                .then(
+                    function(){$uibModalInstance.dismiss('removed');}
+                )
+        };
+
+        $scope.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+        };
+    }
+
+    $scope.confirmDelete = function (host) {
+        var modalInstance = $uibModal.open({
+            animation: $scope.animationsEnabled,
+            templateUrl: 'delete-confirmation-modal.html',
+            size: 'small',
+            controller: ModalInstanceCtrl,
+            resolve: {
+                Host: function () {
+                    return host;
+                }
+            }
+        });
+
+        modalInstance.result.then(function (selectedItem) {
+            $scope.selected = 13;
+        }, function () {
+        });
+    };
+
+    $scope.toggleAnimation = function () {
+        $scope.animationsEnabled = !$scope.animationsEnabled;
+    };
 }

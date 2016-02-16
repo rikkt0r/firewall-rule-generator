@@ -10,9 +10,9 @@
                 </div>
 
                 <ul class="nav nav-sidebar">
-                    <li ng-class="{active: $state.includes('addnew')}"><a ui-sref="addnew">Add new</a></li>
+                    <!--<li ng-class="{active: $state.includes('addnew')}"><a ui-sref="addnew">Add new</a></li>-->
                     <li ng-class="{active: $state.includes('overview')}"><a ui-sref="overview">Overview</a></li>
-                    <li ng-click="$scope.hosts = !$scope.hosts || $state.includes('hosts')"><span>Hosts</span>
+                    <li ng-click="$scope.hosts = !$scope.hosts || $state.includes('hosts')" class="parent"><span class="inactive">Hosts</span>
                         <ul class="nav nav-sidebar">
                             <li ng-class="{active: $state.includes('hosts-add')}"><a ui-sref="hosts-add">Add</a></li>
                             <li ng-class="{active: $state.includes('hosts-list')}"><a ui-sref="hosts-list">List</a></li>

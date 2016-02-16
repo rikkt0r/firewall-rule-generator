@@ -9,7 +9,6 @@
 <table class="table table-striped table-hover">
     <thead>
     <tr>
-        <th>Id</th>
         <th>Name</th>
         <th>Ip Address</th>
         <th>Network</th>
@@ -20,17 +19,32 @@
     </thead>
     <tbody>
     <tr ng-repeat="host in hosts">
-        <td>{{ host.id }}</td>
         <td>{{ host.name}}</td>
         <td>{{ host.ip.address}}</td>
         <td>{{ host.ip.network}}</td>
-        <td><span ng-repeat="interface in host.interfaces">{{interface.name}}, </span></td>
+        <td><span ng-repeat="interface in host.interfaces">{{interface.sys}}, </span></td>
         <td>{{ host.rules.length}}</td>
         <td>
-            <a ui-sref="hosts-show({ id: host.id})" data-toggle="tooltip" title="Show">
-                <i class="fa fa-search"></i>
+            <a ui-sref="hosts-show({ id: host.id})" uib-tooltip="Details" data-toggle="tooltip" title="Show">
+                <i class="fa fa-eye"></i>
+            </a>
+            <a ng-click="confirmDelete(host)" uib-tooltip="Delete" data-toggle="tooltip" title="Show">
+                <i class="fa fa-times"></i>
             </a>
         </td>
     </tr>
     </tbody>
 </table>
+
+<script type="text/ng-template" id="delete-confirmation-modal.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Do you want to remove {{ host.name }}</h3>
+    </div>
+    <div class="modal-body">
+        This operation can not be undone!
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="confirm()">Confirm</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+</script>
