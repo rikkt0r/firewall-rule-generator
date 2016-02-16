@@ -5,11 +5,6 @@
 
 ## TODO:
 
-#### readme api:
-
-* /api/hosts/[uuid4_host_id]/rules/[uuid4_rule_id]/ PUT
-* /api/hosts/[uuid4_host_id]/rules/[uuid4_rule_id]/ DELETE
-
 #### front:
 * kopiowanie reguły jako nowa
 * modyfikowanie reguly
@@ -18,6 +13,7 @@
 #### back:
 * prawie cale api
 * ogarniecie, skad leca wyjatki mongoengine albo zmienic biblioteke
+* templejty
 
 ### Run:
 
@@ -55,6 +51,8 @@ python server/manage.py runserver 5000
 * /api/available/chains/ GET
 * /api/available/tables/ GET
 * /api/available/actions/ GET
+* /api/available/templates/ GET
+* /api/available/templates/[uuid4_template_id]/ GET (chyba, ze od razu w tym wyzej ladowac reguly?)
 
 ## >>> Hosts <<<
 
@@ -203,6 +201,7 @@ no custom chains in this revision.
     {"sys": "FORWARDING", "advanced": true},
     {"sys": "PREROUTING", "advanced": true},
     {"sys": "POSTROUTING", "advanced": true},
+  ]
 }
 ```
 #### GET /api/available/tables/
@@ -217,6 +216,7 @@ Response
     {"sys": "nat", "advanced": true},
     {"sys": "raw", "advanced": true},
     {"sys": "security", "advanced": true},
+  ]
 }
 ```
 
@@ -226,11 +226,41 @@ Request, no data
 Response
 ```json
 {
-  "tables": [
+  "actions": [
     {"sys": "DROP", "advanced": false},
     {"sys": "ACCEPT", "advanced": false},
     {"sys": "REJECT", "advanced": false},
     {"sys": "MASQUERADE", "advanced": true},
+  ]
+}
+```
+
+#### GET /api/available/templates/
+Request, no data
+
+Response
+```json
+{
+  "templates": [
+    {"id": "bc06c2e6-ccb9-481b-9363-2e20b0a46258", "name": "All-negation", "desc": "All packets on input/output dropped by default"},
+    {"id": "5837272e-80cc-4534-a10b-fb4ace090813", "name": "All-ok", "desc": "All packets on input/output accepted by default"},
+  ]
+}
+```
+
+
+#### GET /api/available/templates/[uuid4_template_id]/
+Request, no data
+
+Response
+```json
+{
+  "id": "bc06c2e6-ccb9-481b-9363-2e20b0a46258",
+  "name": "All-negation",
+  "desc": "All packets on input/output dropped by default",
+  "ruleset": [
+    "rules in here, like in GET below"
+  ]
 }
 ```
 
