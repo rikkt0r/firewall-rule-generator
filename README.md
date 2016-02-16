@@ -34,6 +34,7 @@
 * /api/available/templates/[uuid4_template_id]/ GET
 
 * ~~ogarniecie, skad leca wyjatki mongoengine albo zmienic biblioteke~~
+* kopiowanie reguł templejtu przy tworzeniu hosta lub edycji (i zablokowanie mozliwosci dalszej zmiany)
 * utworzenie ilustam templateow
 * dodanie modulow oraz ich parametrow
 
@@ -164,7 +165,7 @@ Response
     {
       "sys": "limit",
       "desc": "Limit incoming packets",
-      "params_available": [
+      "params": [
         {"sys": "limit", "desc": "N/interval ex.  4/minute"},
         {"sys": "limit-burst", "desc": "N ex. 10, temporary enable more than limit"},
       ]
@@ -172,7 +173,7 @@ Response
     {
       "sys": "multiport",
       "desc": "Match multiple ports",
-      "params_available": [
+      "params": [
         {"sys": "sports", "desc": "source ports: port:post or port,port,port or port:port,port,port"},
         {"sys": "dports", "desc": "destination ports: port:post or port,port,port or port:port,port,port"},
         {"sys": "ports", "desc": "source or destination ports: port:post or port,port,port or port:port,port,port"},
@@ -181,14 +182,14 @@ Response
     {
       "sys": "state",
       "desc": "Matching connection state (aliased to conntrack)",
-      "params_available": [
+      "params": [
         {"sys": "state", "desc": "available: NEW,RELATED,ESTABLISHED,CLOSED"}
       ]
     },
     {
       "sys": "tcp",
       "desc": "TCP, enabled automatically when -p tcp",
-      "params_available": [
+      "params": [
         {"sys": "sport", "desc": "source port:  port or port:port"},
         {"sys": "dport", "desc": "destination port:  port or port:port"},
         {"sys": "tcp-flags", "desc": "flags for tcp. which flags to examined <space> which should be set (ALL=SYN,ACK,FIN,RST,URG,PSH)  example: SYN,ACK FIN"},
@@ -197,7 +198,7 @@ Response
     {
       "sys": "udp",
       "desc": "UDP, enabled automatically when -p udp",
-      "params_available": [
+      "params": [
         {"sys": "sport", "desc": "source port:  port or port:port"},
         {"sys": "dport", "desc": "destination port:  port or port:port"},
       ]
@@ -205,7 +206,7 @@ Response
     {
       "sys": "icmp",
       "desc": "ICMP, enabled automatically when -p icmp",
-      "params_available": [
+      "params": [
         {"sys": "icmp-type", "desc": "type of icmp, string or number, ex: echo-request or 8"},
       ]
     },

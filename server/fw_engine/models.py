@@ -60,11 +60,19 @@ class ModuleParams(me.EmbeddedDocument):
     value = me.StringField(min_length=1, max_length=60)
 
 
+class ModuleAvailable(me.Document):
+    sys = me.StringField(max_length=40)
+    desc = me.StringField(max_length=100)
+    params = me.ListField(me.EmbeddedDocumentField(ModuleParams))
+
+    def __repr__(self):
+        return "ModuleAvailable <%s>" % self.sys
+
+
 class Module(me.Document):
     sys = me.StringField(max_length=40)
     desc = me.StringField(max_length=100)
-    params_available = me.ListField(me.EmbeddedDocumentField(ModuleParams))
-    params_set = me.ListField(me.EmbeddedDocumentField(ModuleParams))
+    params = me.ListField(me.EmbeddedDocumentField(ModuleParams))
 
     def __repr__(self):
         return "Module <%s>" % self.sys
@@ -95,7 +103,12 @@ class Rule(me.EmbeddedDocument):
         (3, 'pkts bytes')
     )
 
-    table = me.IntField(choices=TABLES, default=0)
+    FIELDS = ('protocol_reverse', 'source', 'source_mask', 'source_reverse', 'destination', 'destination_mask',
+              'destination_reverse', 'interface_in', 'interface_in_reverse', 'fragment', 'log_level', 'log_prefix')
+
+    # table, chain, protocol, counter, modules, action
+
+    table = me.IntField(choices=TABLES, default=0, required=True)
     chain = me.IntField(choices=CHAINS, required=True)
     protocol = me.IntField(choices=PROTOCOLS)
     protocol_reverse = me.BooleanField(default=False)
@@ -105,14 +118,14 @@ class Rule(me.EmbeddedDocument):
     destination = me.StringField(max_length=15)
     destination_mask = me.IntField(default=0)
     destination_reverse = me.BooleanField(default=False)
-    interface_in = me.EmbeddedDocumentField(Interface)
+    interface_in = me.StringField(max_length=8)
     interface_in_reverse = me.BooleanField(default=False)
-    interface_out = me.EmbeddedDocumentField(Interface)
+    interface_out = me.StringField(max_length=8)
     interface_out_reverse = me.BooleanField(default=False)
     fragment = me.IntField(choices=FRAGMENT, default=0)
     counter = me.IntField(choices=COUNTERS, default=0)
     modules = me.ListField(me.ReferenceField(Module))
-    action = me.IntField(choices=ACTIONS, default=0)
+    action = me.IntField(choices=ACTIONS, required=False)
     log_level = me.IntField(choices=LOG_LEVELS)
     log_prefix = me.StringField(max_length=40)
 

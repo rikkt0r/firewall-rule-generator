@@ -64,5 +64,7 @@ class HostsApi(AbstractRestApi):
         oid = kwargs.get('host_oid', None)
         if oid is None:
             return self.send_status(400)
-        Host.objects.get(pk=oid).delete()
+        host = Host.objects.get(pk=oid)
+        for interface in host.interfaces:
+            interface.delete()
         return self.send_status(200)

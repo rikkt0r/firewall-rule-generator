@@ -44,6 +44,27 @@ class TestHosts(SimpleTestCase):
         host2.delete()
 
     def test_post(self):
+
+        response = self.client.post('/api/hosts/', data=json.dumps({
+            "name": "Host z testu",
+            "htype": 3,
+            "interfaces": [
+                {"sys": "eth0", "desc": "gigabit realtek", "ip": "12.11.10.1", "netmask": 24},
+                {"sys": "wlan0", "desc": "wireless atheros 2k", "ip": "12.11.9.1", "netmask": 24},
+            ]
+        }), content_type="application/json", follow=True)
+
+        self.assertEqual(200, response.status_code)
+        oid = response.json()['id']
+
+        host = Host.objects.get(pk=oid)
+        self.assertEqual(host.name, "Host z testu")
+        self.assertEqual(host.htype, 3)
+        self.assertEqual(host.interfaces[0].sys, 'eth0')
+
+        host.delete()
+
+    def test_post_with_template(self):
         temp = Template()
         temp.name = "Template z testu"
         temp.desc = "bla bla"

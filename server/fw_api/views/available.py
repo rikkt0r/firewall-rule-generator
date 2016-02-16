@@ -1,7 +1,7 @@
 # coding: utf-8
 from django.conf import settings
 from fw_api.views import AbstractRestApi
-from fw_engine.models import Module, Template
+from fw_engine.models import Template, ModuleAvailable
 
 
 class AvailableApi(AbstractRestApi):
@@ -15,7 +15,7 @@ class AvailableApi(AbstractRestApi):
 
     def get_modules(self):
 
-        modules = Module.objects.all()
+        modules = ModuleAvailable.objects.all()
 
         ret = {'modules': []}
 
@@ -23,11 +23,11 @@ class AvailableApi(AbstractRestApi):
             m = {
                 "sys": module.sys,
                 "desc": module.desc,
-                "params_available": []
+                "params": []
             }
 
-            for p in module.params_available:
-                m['params_available'].append({
+            for p in module.params:
+                m['params'].append({
                     "sys": p.sys,
                     "desc": p.desc
                 })
