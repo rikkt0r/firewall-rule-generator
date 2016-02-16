@@ -19,6 +19,8 @@ class HostsApi(AbstractRestApi):
             host.template = temp
 
         if 'interfaces' in data:
+            for interface in host.interfaces:
+                interface.delete()
             for interface in data['interfaces']:
                 host.interfaces.append(Interface())
                 for f in Interface.FIELDS:
