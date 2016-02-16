@@ -22,7 +22,8 @@ app.constant(
         "port": "80",
         "endpoints": {
             "hosts": "?endopoint=hosts",
-            "rules": "?endopoint=rules"
+            "rules": "?endopoint=rules",
+            "available": "?endopoint=available",
         }
     }
 );
