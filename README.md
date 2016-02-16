@@ -11,9 +11,29 @@
 * drag&drop reguł by był spoko, ale raczej po prostu klepnąć jakieś strzałki up/down do zmiany kolejnosci
 
 #### back:
-* prawie cale api
-* ogarniecie, skad leca wyjatki mongoengine albo zmienic biblioteke
-* templejty
+* ~~/api/hosts/ GET~~
+* ~~/api/hosts/[uuid4_host_id]/ POST~~
+* ~~/api/hosts/[uuid4_host_id]/ PUT~~
+* ~~/api/hosts/[uuid4_host_id]/ DELETE~~
+
+* /api/hosts/[uuid4_host_id]/generate/ GET (generator gotowy, klepnac api)
+* /api/hosts/[uuid4_host_id]/rules/ GET
+* /api/hosts/[uuid4_host_id]/rules/ POST
+* /api/hosts/[uuid4_host_id]/rules/[uuid4_rule_id]/ PUT
+* /api/hosts/[uuid4_host_id]/rules/[uuid4_rule_id]/ DELETE
+* /api/hosts/[uuid4_host_id]/rules/[uuid4_rule_id]/up/ POST (yup, we are implementing that..)
+* /api/hosts/[uuid4_host_id]/rules/[uuid4_rule_id]/down/ POST
+
+* ~~/api/available/modules/ GET~~ (brakuje danych)
+* ~~/api/available/chains/ GET~~
+* ~~/api/available/tables/ GET~~
+* ~~/api/available/actions/ GET~~
+* ~~/api/available/templates/ GET~~  (brakuje danych)
+* /api/available/templates/[uuid4_template_id]/ GET
+
+* ~~ogarniecie, skad leca wyjatki mongoengine albo zmienic biblioteke~~
+* utworzenie ilustam templateow
+* dodanie modulow oraz ich parametrow
 
 ### Run:
 
@@ -41,6 +61,8 @@ python server/manage.py runserver 5000
 * /api/hosts/[uuid4_host_id]/ PUT
 * /api/hosts/[uuid4_host_id]/ DELETE
 
+* /api/hosts/[uuid4_host_id]/generate/ GET
+* /api/hosts/[uuid4_host_id]/rules/ GET
 * /api/hosts/[uuid4_host_id]/rules/ POST
 * /api/hosts/[uuid4_host_id]/rules/[uuid4_rule_id]/ PUT
 * /api/hosts/[uuid4_host_id]/rules/[uuid4_rule_id]/ DELETE
@@ -52,7 +74,7 @@ python server/manage.py runserver 5000
 * /api/available/tables/ GET
 * /api/available/actions/ GET
 * /api/available/templates/ GET
-* /api/available/templates/[uuid4_template_id]/ GET (chyba, ze od razu w tym wyzej ladowac reguly?)
+* /api/available/templates/[uuid4_template_id]/ GET
 
 ## >>> Hosts <<<
 
@@ -265,6 +287,22 @@ Response
 ```
 
 ## >>> Rules <<<
+#### GET * /api/hosts/[uuid4_host_id]/generate/
+Request, no data
+
+Response, list of iptables commands.
+```json
+{
+  "lines": [
+     "iptables -A INPUT -i lo -j ACCEPT",
+     "iptables -A INPUT -f -m limit --limit 5/m --limit-burst 7 -j LOG --log-level 4 --log-prefix \"Fragments Packets: \"",
+     "iptables -A INPUT -f -j DROP"
+  ]
+}
+```
+
+
+
 #### GET /api/hosts/[uuid4_host_id]/rules/
 Request, no data
 

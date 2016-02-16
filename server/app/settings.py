@@ -6,11 +6,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '5tb6^d7#d461%g49_hi!k!8*4rj4xef=7_od840=kxxy#j&ana'
 ALLOWED_HOSTS = []
 
-INSTALLED_APPS = ['django.contrib.contenttypes', 'django.contrib.staticfiles',
+INSTALLED_APPS = ['django.contrib.contenttypes', 'django.contrib.staticfiles', 'corsheaders',
                   'fw_api', 'fw_common', 'fw_engine', 'fw_engine_iptables', 'fw_engine_puppet']
 
-MIDDLEWARE_CLASSES = ['django.middleware.security.SecurityMiddleware', 'django.middleware.common.CommonMiddleware',
-                      'django.middleware.clickjacking.XFrameOptionsMiddleware']
+MIDDLEWARE_CLASSES = [
+    'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware'
+]
 
 ROOT_URLCONF = 'app.urls'
 
@@ -33,6 +37,7 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
+CORS_ORIGIN_ALLOW_ALL = True
 
 # ----------------------------------    CUSTOM
 
