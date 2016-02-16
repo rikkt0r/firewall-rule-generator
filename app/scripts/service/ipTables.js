@@ -11,7 +11,9 @@ angular
 
             var _getHosts = function (forceReload) {
 
-                return $http.get(_prepareUrl('hosts'),{cache: true})
+                forceReload = forceReload ? true : false;
+
+                return $http.get(_prepareUrl('hosts'),{cache: forceReload})
                     .then(function (response) {
                             _hosts = response.data.hosts;
                             return _hosts;
@@ -38,7 +40,7 @@ angular
             };
 
             var _removeHost = function (id) {
-                return $http.delete(_prepareUrl('hosts') + '/' + id)
+                return $http.delete(_prepareUrl('hosts') + id + '/')
                     .then(function (response) {
                             return response.data
                         },

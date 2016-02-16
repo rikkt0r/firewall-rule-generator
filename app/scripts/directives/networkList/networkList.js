@@ -20,14 +20,17 @@ function networkList() {
 /** @ngInject */
 function networkListCtrl($scope, $uibModal) {
 
-    function ModalInstanceCtrl($scope, IpTablesService, $uibModalInstance, Host) {
+    function ModalInstanceCtrl($scope, IpTablesService, $uibModalInstance, Host, Hosts) {
 
         $scope.host = Host;
 
         $scope.confirm = function () {
             IpTablesService.removeHost(Host.id)
                 .then(
-                    function(){$uibModalInstance.dismiss('removed');}
+                    function(){
+                        $uibModalInstance.dismiss('removed');
+                        Hosts = IpTablesService.getHosts(true);
+                    }
                 )
         };
 
@@ -39,18 +42,21 @@ function networkListCtrl($scope, $uibModal) {
     $scope.confirmDelete = function (host) {
         var modalInstance = $uibModal.open({
             animation: $scope.animationsEnabled,
+            scope: $scope,
             templateUrl: 'delete-confirmation-modal.html',
             size: 'small',
             controller: ModalInstanceCtrl,
             resolve: {
                 Host: function () {
                     return host;
+                },
+                Hosts: function () {
+                    return $scope.hosts;
                 }
             }
         });
 
         modalInstance.result.then(function (selectedItem) {
-            $scope.selected = 13;
         }, function () {
         });
     };

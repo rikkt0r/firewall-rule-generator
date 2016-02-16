@@ -210,7 +210,10 @@ angular.module('yapp')
 
         $scope.submit = function () {
             $scope.host.htype = $scope.host.htype * 1;
-            IpTablesService.addHost($scope.host);
+            IpTablesService.addHost($scope.host).then(function(data){
+                $location.path('/hosts/'+data.id);
+            })
+
         }
 
         $scope.removeInterface = function (idx) {
