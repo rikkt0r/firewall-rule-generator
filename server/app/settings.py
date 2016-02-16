@@ -38,6 +38,23 @@ USE_L10N = True
 USE_TZ = True
 
 CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_METHODS = (
+    'GET',
+    'POST',
+    'PUT',
+    'PATCH',
+    'DELETE',
+    'OPTIONS'
+)
+CORS_ALLOW_HEADERS = (
+    'x-requested-with',
+    'content-type',
+    'accept',
+    'origin',
+    'authorization',
+    'x-csrftoken'
+)
+CORS_REPLACE_HTTPS_REFERER = False
 
 # ----------------------------------    CUSTOM
 
@@ -73,5 +90,17 @@ ACTIONS = (
     ('ACCEPT', False),
     ('DROP', False),
     ('REJECT', False),
+    ('LOG', True),
     ('MASQUERADE', True)
+)
+
+LOG_LEVELS = (
+    (0, 'Emergency'),
+    (1, 'Alert'),
+    (2, 'Critical'),
+    (3, 'Error'),
+    (4, 'Warning'),
+    (5, 'Notice'),
+    (6, 'Informational'),
+    (7, 'Debug'),
 )

@@ -45,6 +45,9 @@ class AvailableApi(AbstractRestApi):
     def get_actions(self):
         return self.send_json({"actions": [{"sys": c[0], "advanced": c[1]} for c in settings.ACTIONS]})
 
+    def get_loglevels(self):
+        return self.send_json({"loglevels": [{c[1]: c[0]} for c in settings.LOG_LEVELS]})
+
     def get_templates(self):
         templates = Template.objects.all()
         data = {'templates': []}

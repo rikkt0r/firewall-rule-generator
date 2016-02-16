@@ -20,11 +20,17 @@ class Interface(me.EmbeddedDocument):
         validate_netmask(self.netmask)
         super(Interface, self).clean()
 
+    def __repr__(self):
+        return "Interface <%s>" % self.sys
+
 
 class Template(me.Document):
     name = me.StringField(max_length=100)
     desc = me.StringField(max_length=300)
     ruleset = me.SortedListField(me.EmbeddedDocumentField('Rule'))
+
+    def __repr__(self):
+        return "Template <%s>" % self.name
 
 
 class Host(me.Document):
@@ -60,11 +66,15 @@ class Module(me.Document):
     params_available = me.ListField(me.EmbeddedDocumentField(ModuleParams))
     params_set = me.ListField(me.EmbeddedDocumentField(ModuleParams))
 
+    def __repr__(self):
+        return "Module <%s>" % self.sys
+
 
 class Rule(me.EmbeddedDocument):
     TABLES = [(i, t[0]) for i, t in enumerate(settings.TABLES)]
     CHAINS = [(i, c[0]) for i, c in enumerate(settings.CHAINS)]
     ACTIONS = [(i, a[0]) for i, a in enumerate(settings.ACTIONS)]
+    LOG_LEVELS = settings.LOG_LEVELS
 
     PROTOCOLS = (
         (0, 'tcp'),
@@ -103,11 +113,16 @@ class Rule(me.EmbeddedDocument):
     counter = me.IntField(choices=COUNTERS, default=0)
     modules = me.ListField(me.ReferenceField(Module))
     action = me.IntField(choices=ACTIONS, default=0)
+    log_level = me.IntField(choices=LOG_LEVELS)
+    log_prefix = me.StringField(max_length=40)
 
     def validate(self, clean=True):
         validate_netmask(self.source_mask)
         validate_netmask(self.destination_mask)
         super(Rule, self).validate(clean)
+
+    def __repr__(self):
+        return "Rule <%s, modules: %d>" % (self.get_action_display(), len(self.modules))
 
     #     if self.protocol == 2 and Module.objects.get(sys='multiport') in self.modules:
     #         raise ValidationError("ICMP doesnt provide multiport")

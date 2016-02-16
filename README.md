@@ -29,6 +29,7 @@
 * ~~/api/available/chains/ GET~~
 * ~~/api/available/tables/ GET~~
 * ~~/api/available/actions/ GET~~
+* ~~/api/available/loglevels/ GET~~
 * ~~/api/available/templates/ GET~~  (brakuje danych)
 * /api/available/templates/[uuid4_template_id]/ GET
 
@@ -74,6 +75,7 @@ python server/manage.py runserver 5000
 * /api/available/chains/ GET
 * /api/available/tables/ GET
 * /api/available/actions/ GET
+* /api/available/loglevels/ GET
 * /api/available/templates/ GET
 * /api/available/templates/[uuid4_template_id]/ GET
 
@@ -258,6 +260,35 @@ Response
 }
 ```
 
+#### GET /api/available/loglevels/
+Request, no data
+LOG_LEVELS = (
+    (0, 'Emergency'),
+    (1, 'Alert'),
+    (2, 'Critical'),
+    (3, 'Error'),
+    (4, 'Warning'),
+    (5, 'Notice'),
+    (6, 'Informational'),
+    (7, 'Debug'),
+)
+
+Response
+```json
+{
+  "loglevels": [
+    {"Emergency": 0},
+    {"Alert": 1},
+    {"Critical": 2},
+    {"Error": 3},
+    {"Warning": 4},
+    {"Notice": 5},
+    {"Informational": 6},
+    {"Debug": 7},
+  ]
+}
+```
+
 #### GET /api/available/templates/
 Request, no data
 
@@ -334,7 +365,9 @@ Response
           {"sys": "state", "value": "RELATED,ESTABLISHED"},
         ]},
       ],
-      "action": "DROP"
+      "action": "LOG",
+      "log_level": 4,
+      "log_prefix": "Log established"
     }
   ]
 }

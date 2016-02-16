@@ -52,6 +52,13 @@ class Generator(AbstractGenerator):
 
         line += " -j %s" % rule.get_action_display()
 
+        if rule.action == 3 or rule.get_action_display() == 'LOG':  # ten or jako zabezpieczenie przy przypadkowych zmianach..
+            if rule.log_level is not None:
+                line += " --log-level %d" % rule.log_level
+
+            if rule.log_prefix is not None:
+                line += " --log-prefix %s" % rule.log_prefix
+
         return line
 
     def generate(self, host_id):
