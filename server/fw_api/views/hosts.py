@@ -1,4 +1,5 @@
 # coding: utf-8
+import json
 from fw_api.views import AbstractRestApi
 from fw_engine.models import Host, Template, Interface
 
@@ -36,7 +37,7 @@ class HostsApi(AbstractRestApi):
                 "id": str(host.id),
                 "htype": host.htype,
                 "name": host.name,
-                "interfaces": [i.to_json() for i in host.interfaces],
+                "interfaces": [json.loads(i.to_json()) for i in host.interfaces],
                 "template_name": host.template.name if host.template else None
             })
 

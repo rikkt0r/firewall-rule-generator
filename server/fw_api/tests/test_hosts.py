@@ -38,7 +38,7 @@ class TestHosts(SimpleTestCase):
 
             if host['id'] == oid2:
                 self.assertEqual(host['name'], "testu testu")
-                self.assertEqual(json.loads(host['interfaces'][0])['sys'], 'eth0')
+                self.assertEqual(host['interfaces'][0]['sys'], 'eth0')
 
         host1.delete()
         host2.delete()
