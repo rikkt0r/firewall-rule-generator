@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from django.core.exceptions import ValidationError
 from django.conf import settings
 import mongoengine as me
+# from mongoengine.queryset import CASCADE
 
 from fw_common.validators import validate_ip, validate_netmask
 
@@ -126,6 +127,7 @@ class Rule(me.Document):
     interface_out_reverse = me.BooleanField(default=False)
     fragment = me.IntField(choices=FRAGMENT, default=0)
     counter = me.IntField(choices=COUNTERS, default=0)
+    # modules = me.ListField(me.ReferenceField(Module, reverse_delete_rule=CASCADE))
     modules = me.ListField(me.ReferenceField(Module))
     action = me.IntField(choices=ACTIONS, required=False)
     log_level = me.IntField(choices=LOG_LEVELS)

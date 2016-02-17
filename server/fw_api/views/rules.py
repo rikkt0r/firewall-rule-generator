@@ -37,6 +37,15 @@ class RulesApi(AbstractRestApi):
 
         if 'modules' in data:
             for module in data['modules']:
+                if not add:
+                    # lulz, this library suck, references arent removed even if cascade...
+                    found = -1
+                    for m in rule.modules:
+                        if m.sys == module['sys']:
+                            found = rule.modules.index(m)
+                            m.delete()
+                    if found > -1:
+                        del rule.modules[found]
                 mod = Module()
                 mod.sys = module['sys']
                 for param in module['params']:
@@ -79,7 +88,6 @@ class RulesApi(AbstractRestApi):
             return self.send_status(400)
         rule = Rule.objects.get(pk=oid)
         for module in rule.modules:
-            for param in module.params:
-                param.delete()
             module.delete()
+        rule.delete()
         return self.send_status(200)
