@@ -21,10 +21,14 @@
 ### Run:
 
 * apt-get install mongodb // brew install mongodb
-* mongo CLI:
+* $mongo:
 ```mongo
 use iptables
 db.addUser({'user': 'iptables', 'pwd': 'iptables_pass', roles: ['readWrite', 'dbAdmin']})
+```
+* $bash (import data):
+```bash
+mongoimport --db iptables --collection moduleavailable --drop --file dataset_modules.json
 ```
 * python virtualenv:
 ```sh
@@ -44,7 +48,7 @@ python server/manage.py runserver 5000
 * /api/hosts/[uuid4_host_id]/ PUT
 * /api/hosts/[uuid4_host_id]/ DELETE
 
-* /api/hosts/[uuid4_host_id]/generate/ GET
+* /api/hosts/[uuid4_host_id]/generate/iptables/ GET
 * /api/hosts/[uuid4_host_id]/rules/ GET
 * /api/hosts/[uuid4_host_id]/rules/ POST
 * /api/hosts/[uuid4_host_id]/rules/[uuid4_rule_id]/ PUT
