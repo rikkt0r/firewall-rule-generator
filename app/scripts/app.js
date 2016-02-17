@@ -63,6 +63,12 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             parent: 'dashboard',
             templateUrl: 'views/dashboard/overview.html'
         })
+        .state('generate', {
+            url: '/generate',
+            parent: 'dashboard',
+            controller: 'GenerateCtrl',
+            templateUrl: 'views/generate/index.html'
+        })
         .state('reports', {
             url: '/reports',
             parent: 'dashboard',

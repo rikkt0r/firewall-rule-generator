@@ -185,6 +185,19 @@ angular
                         });
             };
 
+            var _generate = function(id){
+                return $http({
+                    'method': 'GET',
+                    'url': _prepareUrl('hosts') + id + '/generate/iptables/'
+                })
+                    .then(function (response) {
+                            return response.data
+                        },
+                        function () {
+                            return false;
+                        });
+            };
+
             return {
                 getHosts: _getHosts,
                 getHost: _getHost,
@@ -201,7 +214,8 @@ angular
                 getLogLevels: _getLogLevels,
                 getTemplate: _getTemplate,
                 addRule: _addRule,
-                getRules: _getRules
+                getRules: _getRules,
+                generate: _generate
             }
         }
     )
