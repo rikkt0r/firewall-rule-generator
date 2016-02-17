@@ -1,5 +1,6 @@
 # coding: utf-8
 import json
+from copy import deepcopy
 from fw_api.views import AbstractRestApi
 from fw_engine.models import Host, Template, Interface
 
@@ -14,9 +15,16 @@ class HostsApi(AbstractRestApi):
             if f in data and data[f] is not None:
                 setattr(host, f, data[f])
 
-        if 'template_id' in data:
-            temp = Template.objects.get(pk=data['template_id'])
-            host.template = temp
+        if 'template_id' in data and not host.template:
+            host.template = Template.objects.get(pk=data['template_id'])
+            if not host.rules:
+                for rule in host.template.rules:
+                    host.rules.append(deepcopy(rule).save())
+            else:
+                count = 0
+                for rule in host.template.rules:
+                    host.rules.insert(count, deepcopy(rule).save())
+                    count += 1
 
         if 'interfaces' in data:
             for interface in host.interfaces:

@@ -11,7 +11,6 @@
 * drag&drop reguł by był spoko, ale raczej po prostu klepnąć jakieś strzałki up/down do zmiany kolejnosci
 
 #### back:
-* /api/hosts/[uuid4_host_id]/rules/ GET + test
 * /api/hosts/[uuid4_host_id]/rules/[uuid4_rule_id]/up/ POST (yup, we are implementing that..)
 * /api/hosts/[uuid4_host_id]/rules/[uuid4_rule_id]/down/ POST
 
