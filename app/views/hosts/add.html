@@ -33,7 +33,7 @@
                 <div class="col-lg-6">
 
                     <h4>Add interface:</h4>
-                    <form name="interface" id="interface">
+                    <form name="" id="interface">
 
                         <!--@todo fix validation&lt;!&ndash;&ndash;&gt;
 
@@ -79,9 +79,6 @@
                                         placeholder="IP">
                             </div>
                             <div class="col-lg-4">
-                                <!--<input type="text" class="form-control input-underline"
-                                       ng-model="interface.netmask"
-                                       placeholder="Netmask">-->
                                 <select ng-model="interface.netmask"
                                         placeholder="Netmask"
                                         class="form-control input-underline">
@@ -130,11 +127,11 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr ng-repeat="interface in host.interfaces">
-                                <td>{{interface.ip}}</td>
-                                <td>{{interface.netmask}}</td>
-                                <td>{{interface.sys}}</td>
-                                <td>{{interface.desc}}</td>
+                            <tr ng-repeat="_interface in host.interfaces">
+                                <td>{{_interface.ip }}</td>
+                                <td>{{_interface.netmask}}</td>
+                                <td>{{_interface.sys}}</td>
+                                <td>{{_interface.desc}}</td>
                                 <td>
                                     <i ng-click="removeinterface($index)" class="fa fa-times"></i>
                                 </td>

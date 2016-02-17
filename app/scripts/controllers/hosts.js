@@ -100,7 +100,7 @@ angular.module('yapp')
     };
 
     $scope.newinterface = {
-        ip : '',
+        ip : null,
         sys: '',
         netmask: 0,
         desc: ''
@@ -204,6 +204,12 @@ angular.module('yapp')
             rules: ''
         };
 
+        $scope.interface = {
+            'sys': '',
+            'ip': '',
+            netmask: '',
+            desc: ''
+        };
         $scope.tmpinterface = {
             'sys': '1.1.1.1',
             'ip': '1.1.1.1',
@@ -227,18 +233,6 @@ angular.module('yapp')
         $scope.interface = {
             checkValid: $validationProvider.checkValid,
             submit: function (form) {
-                //$validationProvider.validate(form)
-                //    .success(
-                //        function(){
-                //            console.log('success');
-                //        }
-                //    )
-                //    .error(
-                //        function(){
-                //            console.log('error');
-                //        }
-                //    );
-
                 $scope.addinterface();
             },
             reset: function (form) {
@@ -270,7 +264,7 @@ angular.module('yapp')
                 netmask: $scope.interface.netmask * 1,
                 desc: $scope.interface.desc
             };
-            debugger;
+
             $scope.host.interfaces.push(
                 obj
             );
