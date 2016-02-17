@@ -142,7 +142,7 @@ class Rule(me.Document):
                     raise ValidationError("ICMP is not compatible with multiport")
         super(Rule, self).validate(clean)
 
-    def __deepcopy__(self):
+    def __deepcopy__(self, memo):
         fields = self.FIELDS + ('table', 'chain', 'protocol', 'counter', 'action')
         rule = Rule()
         for f in fields:

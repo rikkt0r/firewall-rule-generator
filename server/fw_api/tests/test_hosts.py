@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import json
 from django.test import SimpleTestCase
-from fw_engine.models import Host, Template, Interface
+from fw_engine.models import Host, Template, Interface, Module, ModuleParam, Rule
 
 
 class TestHosts(SimpleTestCase):
@@ -65,9 +65,25 @@ class TestHosts(SimpleTestCase):
         host.delete()
 
     def test_post_with_template(self):
+
+        mod = Module()
+        mod.sys = "multiport"
+        mod.params.append(ModuleParam())
+        mod.params[0].sys = "dports"
+        mod.params[0].value = "10:100,145,155"
+        mod.save()
+
+        rule = Rule()
+        rule.chain = 0
+        rule.action = 1  # drop
+        rule.protocol = 0
+        rule.modules.append(mod)
+        rule.save()
+
         temp = Template()
         temp.name = "Template z testu"
         temp.desc = "bla bla"
+        temp.rules.append(rule)
         temp.save()
 
         response = self.client.post('/api/hosts/', data=json.dumps({
@@ -87,7 +103,15 @@ class TestHosts(SimpleTestCase):
         self.assertEqual(host.name, "Host z testu")
         self.assertEqual(host.htype, 3)
         self.assertEqual(host.interfaces[0].sys, 'eth0')
+        self.assertEqual(host.rules[0].action, 1)
+        self.assertEqual(host.rules[0].table, 0)
+        self.assertEqual(host.rules[0].protocol, 0)
+        self.assertEqual(host.rules[0].modules[0].sys, 'multiport')
+        self.assertEqual(host.rules[0].modules[0].params[0].sys, 'dports')
+        self.assertEqual(host.rules[0].modules[0].params[0].value, '10:100,145,155')
 
+        mod.delete()
+        rule.delete()
         host.delete()
         temp.delete()
 

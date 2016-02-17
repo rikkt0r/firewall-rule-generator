@@ -64,7 +64,8 @@ class RulesApi(AbstractRestApi):
 
         rules = []
         for rule in host.rules:
-            r = {'modules': []}
+            r = {'id': str(rule.id), 'modules': []}
+
             for f in Rule.FIELDS:
                 r[f] = getattr(rule, f)
             r['table'] = rule.get_table_display()

@@ -6,20 +6,49 @@ from fw_engine.models import Rule, Host, Module, ModuleParam
 
 class TestRules(SimpleTestCase):
     def test_get(self):
-        pass
-        # host = Host()
-        # host.name = "host for testing rule list"
-        # host.save()
-        #
-        # host_oid = str(host.id)
-        #
-        # response = self.client.get('/api/hosts/%s/rules/' % host_oid, follow=True)
-        # self.assertEqual(200, response.status_code)
-        # data = response.json()['rules']
-        #
-        # ids = [r['id'] for r in data]
-        #
-        # host.delete()
+        host = Host()
+        host.name = "host for testing rule list"
+        host.save()
+
+        mod = Module()
+        mod.sys = "limit"
+        mod.params.append(ModuleParam())
+        mod.params[0].sys = "limit-rate"
+        mod.params[0].value = "5/min"
+        mod.save()
+
+        rule = Rule()
+        rule.chain = 0
+        rule.action = 0
+        rule.source = '192.168.0.1'
+        rule.source_mask = 24
+        rule.source_reverse = True
+        rule.modules.append(mod)
+        rule.save()
+
+        host.rules.append(rule)
+        host.save()
+
+        host_oid = str(host.id)
+
+        response = self.client.get('/api/hosts/%s/rules/' % host_oid, follow=True)
+        self.assertEqual(200, response.status_code)
+        data = response.json()['rules']
+
+        self.assertEqual(data[0]['id'], str(rule.id))
+        self.assertEqual(data[0]['source'], '192.168.0.1')
+        self.assertEqual(data[0]['source_reverse'], True)
+        self.assertEqual(data[0]['source_mask'], 24)
+        self.assertEqual(data[0]['chain'], 'INPUT')
+        self.assertEqual(data[0]['action'], 'ACCEPT')
+        self.assertEqual(data[0]['table'], 'filter')
+        self.assertEqual(data[0]['modules'][0]['sys'], 'limit')
+        self.assertEqual(data[0]['modules'][0]['params'][0]['sys'], 'limit-rate')
+        self.assertEqual(data[0]['modules'][0]['params'][0]['value'], '5/min')
+
+        mod.delete()
+        rule.delete()
+        host.delete()
 
     def test_post(self):
 
