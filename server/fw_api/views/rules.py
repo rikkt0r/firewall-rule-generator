@@ -22,17 +22,17 @@ class RulesApi(AbstractRestApi):
             from fw_common.exceptions import FwException
             raise FwException("Not enough parameters...")
 
-        if 'table' in data:
+        if 'table' in data and data['table'] is not None:
             rule.table = reverse_choice(Rule.TABLES, data['table'])
-        if 'chain' in data:
+        if 'chain' in data and data['chain'] is not None:
             rule.chain = reverse_choice(Rule.CHAINS, data['chain'])
-        if 'action' in data:
+        if 'action' in data and data['action'] is not None:
             rule.action = reverse_choice(Rule.ACTIONS, data['action'])
 
-        if 'protocol' in data:
+        if 'protocol' in data and data['protocol'] is not None:
             rule.protocol = reverse_choice(Rule.PROTOCOLS, data['protocol'])
 
-        if 'counter' in data:
+        if 'counter' in data and data['counter'] is not None:
             rule.counter = reverse_choice(Rule.COUNTERS, data['counter'])
 
         if 'modules' in data:
