@@ -18,7 +18,7 @@
             </div>
         </div>
 
-        <div class="jumbotron" >
+        <div class="jumbotron">
             <h3 ng-show="mode==='basic'">Basic mode - FILTER</h3>
             <h3 ng-show="mode==='advanced'">Advanced mode</h3>
             <div class="rules-input">
@@ -241,9 +241,11 @@
                                 <tbody>
                                 <tr ng-repeat="module in rule.modules">
                                     <td>{{ module.sys}}</td>
-                                    <td><span ng-repeat="param in module.params">{{param.sys}}:{{param.value}}{{$last ? '' : ', '}}</span></td>
+                                    <td><span ng-repeat="param in module.params">{{param.sys}}:{{param.value}}{{$last ? '' : ', '}}</span>
+                                    </td>
                                     <td>
-                                        <a ng-click="removeModule($index)" uib-tooltip="Delete" data-toggle="tooltip" title="Show">
+                                        <a ng-click="removeModule($index)" uib-tooltip="Delete" data-toggle="tooltip"
+                                           title="Show">
                                             <i class="fa fa-times"></i>
                                         </a>
                                     </td>
@@ -311,7 +313,8 @@
                                         class="form-control input-lg input-underline">
                                     <option value="" disabled>Choose interface</option>
                                     <option ng-repeat="interface in host.interfaces"
-                                            value="{{host.interfaces[$index].sys}}">{{host.interfaces[$index].sys}} - {{ host.interfaces[$index].desc}}
+                                            value="{{host.interfaces[$index].sys}}">{{host.interfaces[$index].sys}} - {{
+                                        host.interfaces[$index].desc}}
                                     </option>
                                 </select>
 
@@ -338,10 +341,27 @@
                                         placeholder="Chain"
                                         class="form-control input-lg input-underline">
                                     <option value="" disabled>Choose action</option>
+                                    <option value="LOG">LOG</option>
                                     <option ng-repeat="action in getActions(false)"
                                             value="{{action.sys}}">{{action.sys}}
                                     </option>
                                 </select>
+                                <div ng-show="rule.action==='LOG'">
+                                    <select
+                                            ng-model="rule.log_level"
+                                            placeholder="Chain"
+                                            class="form-control input-lg input-underline">
+                                        <option value="" disabled>Choose log level</option>
+                                        <option ng-repeat="level in loglevels"
+                                                value="{{level.value}}">{{level.sys}}
+                                        </option>
+                                    </select>
+                                    <input type="text"
+                                           class="form-control input-lg input-underline"
+                                           ng-model="log_prefix"
+                                           name="log_prefix"
+                                           placeholder="Log prefix">
+                                </div>
 
                             </div>
                         </div>
@@ -355,20 +375,22 @@
 
             </div>
 
-            <!-- button -->
-            <div class="row">
-                <div class="form-group button-container">
-                    <button type="submit" ng-click="submit()"
-                            class="btn btn-primary btn-lg btn-outline btn-rounded">
-                        Save
-                    </button>
-                    <button type="submit" ng-click="cancel()"
-                            class="btn btn-white pull-right btn-outline btn-rounded">
-                        Cancel
-                    </button>
-                </div>
+        </div>
+
+        <!-- button -->
+        <div class="row">
+            <div class="form-group button-container">
+                <button type="submit" ng-click="submit()"
+                        class="btn btn-primary btn-lg btn-outline btn-rounded">
+                    Save
+                </button>
+                <button type="submit" ng-click="cancel()"
+                        class="btn btn-white pull-right btn-outline btn-rounded">
+                    Cancel
+                </button>
             </div>
         </div>
     </div>
+</div>
 </div>
 

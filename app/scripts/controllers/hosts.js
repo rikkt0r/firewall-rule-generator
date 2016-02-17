@@ -39,7 +39,7 @@ angular.module('yapp')
                     //get rules
                     IpTablesService.getRules($scope.host.id)
                         .then(function(response){
-                            $scope.rules = response;
+                            $scope.rules = response.rules;
                         })
 
                     break;
@@ -47,7 +47,7 @@ angular.module('yapp')
             }
         });
 
-
+    $scope.rules = [];
 
     $scope.oldHost = {};
     $scope.editMode = false;
@@ -91,6 +91,14 @@ angular.module('yapp')
         $scope.host.interfaces.splice(idx, 1);
     };
 
+    $scope.removeRule = function (ruleId) {
+        IpTablesService.removeRule($scope.host.id, ruleId).then(
+            function(){
+                $state.go($state.current, {}, {reload: true});
+            }
+        )
+    };
+
     $scope.newInterface = {
         ip : '',
         sys: '',
@@ -99,6 +107,13 @@ angular.module('yapp')
     };
 
     $scope.addInterface = function(){
+        if(
+            !($scope.newInterface.ip
+            && $scope.newInterface.netmask
+            && $scope.newInterface.sys)
+        ){
+            return false;
+        }
         var newInterfaceTmp = {};
         angular.copy($scope.newInterface, newInterfaceTmp);
         $scope.newInterface = {
@@ -114,7 +129,9 @@ angular.module('yapp')
     }
 
     $scope.interfaceValid = function(){
-
+        return (($scope.host.interface.ip)
+        && ($scope.host.interface.netmask)
+        && ($scope.host.interface.sys));
     }
 
     $scope.addRule = function(){
@@ -239,6 +256,12 @@ angular.module('yapp')
         $scope.removeInterface = function (idx) {
             $scope.host.interfaces.splice(idx, 1);
         };
+
+        $scope.interfaceValid = function(){
+            return (($scope.interface.ip)
+            && ($scope.interface.netmask)
+            && ($scope.interface.sys));
+        }
 
         $scope.addInterface = function () {
             var obj = {

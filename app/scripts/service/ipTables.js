@@ -185,6 +185,19 @@ angular
                         });
             };
 
+            var _removeRule = function (hostId, ruleId) {
+                return $http({
+                    'method': 'DELETE',
+                    'url': _prepareUrl('hosts') + hostId + '/rules/' + ruleId + '/'
+                })
+                    .then(function (response) {
+                            return response.data
+                        },
+                        function () {
+                            return false;
+                        });
+            };
+
             var _generate = function(id){
                 return $http({
                     'method': 'GET',
@@ -215,6 +228,7 @@ angular
                 getTemplate: _getTemplate,
                 addRule: _addRule,
                 getRules: _getRules,
+                removeRule: _removeRule,
                 generate: _generate
             }
         }

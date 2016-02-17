@@ -107,9 +107,8 @@
                                placeholder="Description"
                         >
 
-
                         <button type="submit"
-                                ng-disabled="!interface.checkValid(Interface)"
+                                ng-disabled="!interfaceValid()"
                                 ng-click="interface.submit(Interface)"
                                 class="btn btn-outline btn-small btn-rounded pull-right">Add
                             interface
