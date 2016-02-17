@@ -59,7 +59,27 @@ class RulesApi(AbstractRestApi):
         return str(rule.id)
 
     def get(self, request, *args, **kwargs):
-        return self.send_json({'implementation': 'needed'})
+        host_oid = kwargs.get('host_oid', None)
+        host = Host.objects.get(pk=host_oid)
+
+        rules = []
+        for rule in host.rules:
+            r = {'modules': []}
+            for f in Rule.FIELDS:
+                r[f] = getattr(rule, f)
+            r['table'] = rule.get_table_display()
+            r['chain'] = rule.get_chain_display()
+            r['protocol'] = rule.get_protocol_display()
+            r['counter'] = rule.get_counter_display()
+            r['action'] = rule.get_action_display()
+
+            for module in rule.modules:
+                mod = {'sys': module.sys, 'params': []}
+                for param in module.params:
+                    mod['params'].append({'sys': param.sys, 'value': param.value})
+                r['modules'].append(mod)
+
+        return self.send_json({'rules': rules})
 
     def post(self, request, *args, **kwargs):
         host_oid = kwargs.get('host_oid', None)
