@@ -1,0 +1,4 @@
+{ "_id" : { "$oid" : "56c455788663bf2b539e0714" }, "name" : "default input,forward blocked, output allowed", "desc" : "Simple template, without rules. input: drop, output: accept, forward: drop", "input" : false, "output" : true, "forward" : false, "rules" : [] }
+{ "_id" : { "$oid" : "56c455cb8663bf2b539e0715" }, "name" : "all allowed", "desc" : "all allowed by default, no rules specified", "input" : true, "output" : true, "forward" : true, "rules" : [] }
+{ "_id" : { "$oid" : "56c4568e8663bf2b539e0716" }, "name" : "all blocked", "desc" : "all blocked by default, no rules specified", "input" : false, "output" : false, "forward" : false, "rules" : [] }
+{ "_id" : { "$oid" : "56c458ba8663bf2b539e071a" }, "name" : "in/forward blocked, out allowed, allow in lo, allow in state est/rel", "input" : false, "output" : true, "forward" : false, "rules" : [ { "$oid" : "56c458008663bf2b539e0717" }, { "$oid" : "56c458968663bf2b539e0719" } ] }
