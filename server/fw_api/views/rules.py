@@ -78,6 +78,7 @@ class RulesApi(AbstractRestApi):
                 for param in module.params:
                     mod['params'].append({'sys': param.sys, 'value': param.value})
                 r['modules'].append(mod)
+            rules.append(r)
 
         return self.send_json({'rules': rules})
 
