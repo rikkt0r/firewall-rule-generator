@@ -11,32 +11,13 @@
 * drag&drop reguł by był spoko, ale raczej po prostu klepnąć jakieś strzałki up/down do zmiany kolejnosci
 
 #### back:
-* ~~/api/hosts/ GET~~
-* ~~/api/hosts/[uuid4_host_id]/ POST~~
-* ~~/api/hosts/[uuid4_host_id]/ PUT~~
-* ~~/api/hosts/[uuid4_host_id]/ DELETE~~
-
-* ~~/api/hosts/[uuid4_host_id]/generate/iptables GET~~
-* ~~/api/hosts/[uuid4_host_id]/generate/puppet GET~~ (nie zdążymy, więc zamockowne)
-* /api/hosts/[uuid4_host_id]/rules/ GET
-* /api/hosts/[uuid4_host_id]/rules/ POST
-* /api/hosts/[uuid4_host_id]/rules/[uuid4_rule_id]/ PUT
-* /api/hosts/[uuid4_host_id]/rules/[uuid4_rule_id]/ DELETE
+* /api/hosts/[uuid4_host_id]/rules/ GET + test
 * /api/hosts/[uuid4_host_id]/rules/[uuid4_rule_id]/up/ POST (yup, we are implementing that..)
 * /api/hosts/[uuid4_host_id]/rules/[uuid4_rule_id]/down/ POST
 
-* ~~/api/available/modules/ GET~~ (brakuje danych)
-* ~~/api/available/chains/ GET~~
-* ~~/api/available/tables/ GET~~
-* ~~/api/available/actions/ GET~~
-* ~~/api/available/loglevels/ GET~~
-* ~~/api/available/templates/ GET~~  (brakuje danych)
-* /api/available/templates/[uuid4_template_id]/ GET
-
-* ~~ogarniecie, skad leca wyjatki mongoengine albo zmienic biblioteke~~
 * kopiowanie reguł templejtu przy tworzeniu hosta lub edycji (i zablokowanie mozliwosci dalszej zmiany)
-* utworzenie ilustam templateow
-* dodanie modulow oraz ich parametrow
+* przygotowanie datasetu z modulami/parametrami
+* przygotowanie datasetu z templateami
 
 ### Run:
 
@@ -299,22 +280,6 @@ Response
   "templates": [
     {"id": "bc06c2e6-ccb9-481b-9363-2e20b0a46258", "name": "All-negation", "desc": "All packets on input/output dropped by default"},
     {"id": "5837272e-80cc-4534-a10b-fb4ace090813", "name": "All-ok", "desc": "All packets on input/output accepted by default"},
-  ]
-}
-```
-
-
-#### GET /api/available/templates/[uuid4_template_id]/
-Request, no data
-
-Response
-```json
-{
-  "id": "bc06c2e6-ccb9-481b-9363-2e20b0a46258",
-  "name": "All-negation",
-  "desc": "All packets on input/output dropped by default",
-  "ruleset": [
-    "rules in here, like in GET below"
   ]
 }
 ```

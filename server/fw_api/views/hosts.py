@@ -11,7 +11,7 @@ class HostsApi(AbstractRestApi):
     def host_add_or_edit(self, host, data):
 
         for f in Host.FIELDS:
-            if data.get(f, None):
+            if f in data and data[f] is not None:
                 setattr(host, f, data[f])
 
         if 'template_id' in data:

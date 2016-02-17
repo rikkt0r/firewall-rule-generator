@@ -14,7 +14,7 @@ class RulesApi(AbstractRestApi):
     def rule_add_or_edit(self, rule, data, add=False):
 
         for f in Rule.FIELDS:
-            if data.get(f, None):
+            if f in data and data[f] is not None:
                 setattr(rule, f, data[f])
 
         # table, chain, action REQUIRED
