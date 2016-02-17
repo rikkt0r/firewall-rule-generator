@@ -63,8 +63,14 @@ class Generator(AbstractGenerator):
 
     def generate(self, host_id):
 
-        lines = []
-        rules = Host.objects.get(pk=host_id).rules
+        lines = ["iptables -F"]
+        host = Host.objects.get(pk=host_id)
+        rules = host.rules
+
+        if host.template:
+            lines.append("iptables -P INPUT %s" % 'ACCEPT' if host.template.input else 'DROP')
+            lines.append("iptables -P OUTPUT %s" % 'ACCEPT' if host.template.output else 'DROP')
+            lines.append("iptables -P FORWARD %s" % 'ACCEPT' if host.template.forward else 'DROP')
 
         for rule in rules:
             lines.append(self.generate_for_rule(rule))
