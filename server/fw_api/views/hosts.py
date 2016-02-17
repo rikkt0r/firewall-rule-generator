@@ -40,7 +40,8 @@ class HostsApi(AbstractRestApi):
                 "htype": host.htype,
                 "name": host.name,
                 "interfaces": [json.loads(i.to_json()) for i in host.interfaces],
-                "template_name": host.template.name if host.template else None
+                "template_name": host.template.name if host.template else None,
+                "rule_count": len(host.rules)
             })
 
         return self.send_json(data)

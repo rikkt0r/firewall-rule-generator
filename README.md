@@ -78,7 +78,8 @@ Response
         {"sys": "eth0", "desc": "100mbps realtek", "ip": "1.2.3.1", "netmask": 28},
         {"sys": "eth1", "desc": "gigabitowy realtek", "ip": "1.2.4.133", "netmask": 24},
       ],
-      "template_name": "template name"
+      "template_name": "template name",
+      "rule_count": 14
     },
     {
       "id": "e508011e-3484-401d-a3c8-5aa797075f2c",
@@ -88,7 +89,8 @@ Response
         {"sys": "eth0", "desc": "gigabitowy realtek", "ip": "12.11.10.1", "netmask": 24},
         {"sys": "eth1", "desc": "gigabitowy realtek 2", "ip": "12.11.5.1", "netmask": 24},
       ],
-      "template_name": "template name"
+      "template_name": "template name",
+      "rule_count": 30
     }
   ]
 }
