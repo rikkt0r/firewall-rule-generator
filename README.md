@@ -41,7 +41,9 @@ db.addUser({'user': 'iptables', 'pwd': 'iptables_pass', roles: ['readWrite', 'db
 ```
 * $bash (import data):
 ```bash
-mongoimport --db iptables --collection moduleavailable --drop --file dataset_modules.json
+mongoimport --db iptables --collection module_available --drop --file dataset_modules.json
+mongoimport --db iptables --collection rules --drop --file dataset_rules.json
+mongoimport --db iptables --collection templates --drop --file dataset_templates.json
 ```
 * python virtualenv:
 ```sh
