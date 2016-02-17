@@ -18,7 +18,7 @@
             </div>
         </div>
 
-        <div class="jumbotron">
+        <div class="jumbotron" ng-show="mode!==''">
             <h3 ng-show="mode==='basic'">Basic mode - FILTER</h3>
             <h3 ng-show="mode==='advanced'">Advanced mode</h3>
             <div class="rules-input">
@@ -300,12 +300,12 @@
                     </div>
                 </div>
 
-                <!-- Interface -->
+                <!-- interfac -->
 
                 <div class="row step" ng-show="host.interfaces.length">
                     <div class="col-lg-8">
                         <div class="row">
-                            <h5>{{ mode==='basic' ? 4 : 6}}. Interface</h5>
+                            <h5>{{ mode==='basic' ? 4 : 6}}. interface</h5>
                             <div class="col-lg-12">
                                 <select
                                         ng-model="rule.interface"
@@ -375,22 +375,22 @@
 
             </div>
 
+            <!-- button -->
+            <div class="row">
+                <div class="form-group button-container">
+                    <button type="submit" ng-click="submit()"
+                            class="btn btn-primary btn-lg btn-outline btn-rounded">
+                        Save
+                    </button>
+                    <button type="submit" ng-click="cancel()"
+                            class="btn btn-white pull-right btn-outline btn-rounded">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+
         </div>
 
-        <!-- button -->
-        <div class="row">
-            <div class="form-group button-container">
-                <button type="submit" ng-click="submit()"
-                        class="btn btn-primary btn-lg btn-outline btn-rounded">
-                    Save
-                </button>
-                <button type="submit" ng-click="cancel()"
-                        class="btn btn-white pull-right btn-outline btn-rounded">
-                    Cancel
-                </button>
-            </div>
-        </div>
     </div>
-</div>
 </div>
 

@@ -52,7 +52,7 @@ angular.module('yapp')
                 ]
             }];
 
-        $scope.mode = 'advanced';
+        $scope.mode = '';
 
         $scope.addModuleName = '';
         $scope.addModuleParams = [];
@@ -107,12 +107,15 @@ angular.module('yapp')
             var rulePrepared = prepareRule();
             IpTablesService.addRule($scope.host.id, rulePrepared).then(
                 function(response){
-                    console.log(response)
                     $state.go('hosts-show', {id: $scope.host.id}, {reload: true});
 
                 }
             )
-        }
+        };
+
+        $scope.cancel = function(){
+            $state.go('hosts-show', {id: $scope.host.id}, {reload: true});
+        };
 
         var prepareRule = function() {
             var rulePrepared = {};
@@ -129,7 +132,7 @@ angular.module('yapp')
             rulePrepared.action = $scope.rule.action;
             rulePrepared.modules = [];
             if($scope.rule.action == 'LOG'){
-                rulePrepared.log_level =  $scope.rule.log_level;
+                rulePrepared.log_level =  $scope.rule.log_level*1;
                 rulePrepared.log_prefix =  $scope.rule.log_prefix;
             }
 

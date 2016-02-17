@@ -87,7 +87,7 @@ angular.module('yapp')
     $scope.htypeSelected = function (val) {
         return val == host.htype;
     }
-    $scope.removeInterface = function (idx) {
+    $scope.removeinterface = function (idx) {
         $scope.host.interfaces.splice(idx, 1);
     };
 
@@ -99,33 +99,33 @@ angular.module('yapp')
         )
     };
 
-    $scope.newInterface = {
+    $scope.newinterface = {
         ip : '',
         sys: '',
         netmask: 0,
         desc: ''
     };
 
-    $scope.addInterface = function(){
-        if(
-            !($scope.newInterface.ip
-            && $scope.newInterface.netmask
-            && $scope.newInterface.sys)
-        ){
-            return false;
-        }
-        var newInterfaceTmp = {};
-        angular.copy($scope.newInterface, newInterfaceTmp);
-        $scope.newInterface = {
+    $scope.addinterface = function(){
+        //if(
+        //    !($scope.newinterface.ip
+        //    || $scope.newinterface.netmask
+        //    || $scope.newinterface.sys)
+        //){
+        //    return false;
+        //}
+        var newinterfaceTmp = {};
+        angular.copy($scope.newinterface, newinterfaceTmp);
+        $scope.newinterface = {
             ip : '',
             sys: '',
             netmask: 0,
             desc: ''
         };
 
-        newInterfaceTmp.netmask = newInterfaceTmp.netmask*1;
+        newinterfaceTmp.netmask = newinterfaceTmp.netmask*1;
 
-        $scope.host.interfaces.push(newInterfaceTmp);
+        $scope.host.interfaces.push(newinterfaceTmp);
     }
 
     $scope.interfaceValid = function(){
@@ -200,11 +200,11 @@ angular.module('yapp')
             name: '',
             htype: '',
             interfaces: [],
-            template: '',
+            template_id: '',
             rules: ''
         };
 
-        $scope.tmpInterface = {
+        $scope.tmpinterface = {
             'sys': '1.1.1.1',
             'ip': '1.1.1.1',
             netmask: '2',
@@ -239,7 +239,7 @@ angular.module('yapp')
                 //        }
                 //    );
 
-                $scope.addInterface();
+                $scope.addinterface();
             },
             reset: function (form) {
             }
@@ -253,7 +253,7 @@ angular.module('yapp')
 
         }
 
-        $scope.removeInterface = function (idx) {
+        $scope.removeinterface = function (idx) {
             $scope.host.interfaces.splice(idx, 1);
         };
 
@@ -263,13 +263,14 @@ angular.module('yapp')
             && ($scope.interface.sys));
         }
 
-        $scope.addInterface = function () {
+        $scope.addinterface = function () {
             var obj = {
                 'sys': $scope.interface.sys,
                 'ip': $scope.interface.ip,
                 netmask: $scope.interface.netmask * 1,
                 desc: $scope.interface.desc
             };
+            debugger;
             $scope.host.interfaces.push(
                 obj
             );
