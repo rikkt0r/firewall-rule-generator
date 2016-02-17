@@ -105,11 +105,18 @@ class RulesApi(AbstractRestApi):
         return self.send_status(200)
 
     def delete(self, request, *args, **kwargs):
+        host_oid = kwargs.get('host_oid', None)
+        host = Host.objects.get(pk=host_oid)
         oid = kwargs.get('rule_oid', None)
+
         if oid is None:
             return self.send_status(400)
         rule = Rule.objects.get(pk=oid)
+        del host.rules[host.rules.index(rule)]
+        host.save()
+
         for module in rule.modules:
             module.delete()
         rule.delete()
+
         return self.send_status(200)

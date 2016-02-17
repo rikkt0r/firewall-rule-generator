@@ -14,8 +14,6 @@
 * /api/hosts/[uuid4_host_id]/rules/[uuid4_rule_id]/up/ POST (yup, we are implementing that..)
 * /api/hosts/[uuid4_host_id]/rules/[uuid4_rule_id]/down/ POST
 
-* kopiowanie reguł templejtu przy tworzeniu hosta lub edycji (i zablokowanie mozliwosci dalszej zmiany)
-* przygotowanie datasetu z modulami/parametrami
 * przygotowanie datasetu z templateami
 
 ### Run:
