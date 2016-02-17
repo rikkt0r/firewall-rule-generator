@@ -28,6 +28,9 @@ class Interface(me.EmbeddedDocument):
 class Template(me.Document):
     name = me.StringField(max_length=100)
     desc = me.StringField(max_length=300)
+    input = False
+    output = True
+    forward = False
     rules = me.SortedListField(me.ReferenceField('Rule'))
 
     def __repr__(self):
