@@ -1,0 +1,374 @@
+<div id="host-rule-add" class="host-rule-add">
+    <div class="row">
+        <h1>Add rule - {{ host.name }}</h1>
+
+        <div class="jumbotron row text-center" ng-show="mode===''">
+            <h2>Choose mode</h2>
+            <div class="col-lg-6 text-center">
+                <button ng-click="setBasicMode()" class="btn btn-primary btn-white btn-outline btn-lg btn-rounded">
+                    Basic
+                </button>
+                <p>Easily add most common filtering entries using simplied interface.</p>
+            </div>
+            <div class="col-lg-6 text-center">
+                <button ng-click="setAdvancedMode()" class="btn btn-primary btn-white btn-outline btn-lg btn-rounded">
+                    Advanced
+                </button>
+                <p>In advanced mode you can specify multiple advanced modules along with logging level.</p>
+            </div>
+        </div>
+
+        <div class="jumbotron" >
+            <h3 ng-show="mode==='basic'">Basic mode - FILTER</h3>
+            <h3 ng-show="mode==='advanced'">Advanced mode</h3>
+            <div class="rules-input">
+
+                <!-- Table -->
+
+                <div class="row step">
+                    <div class="col-lg-8">
+                        <div class="row">
+                            <h5>1. Table</h5>
+                            <div class="col-lg-12">
+                                <select
+                                        ng-model="rule.table"
+                                        placeholder="Table"
+                                        class="form-control input-lg input-underline">
+                                    <option value="" disabled>Choose table</option>
+                                    <option ng-repeat="table in tables"
+                                            value="{{table.sys}}">{{table.sys}}
+                                    </option>
+                                </select>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <h5 class="strong">HINT: </h5>
+                        <p>Donec ut pede. Curabitur elit. Proin cursus, lacus magna, sollicitudin mi. Curabitur volutpat
+                            a, laoreet commodo, odio eget sapien eu mi.</p>
+                    </div>
+                </div>
+
+                <!-- Chain -->
+
+                <div class="row step">
+                    <div class="col-lg-8">
+                        <div class="row">
+                            <h5>{{ mode==='basic' ? 1 : 2}}. Chain</h5>
+                            <div class="col-lg-12">
+                                <select
+                                        ng-model="rule.chain"
+                                        placeholder="Chain"
+                                        class="form-control input-lg input-underline">
+                                    <option value="" disabled>Choose chain</option>
+                                    <option ng-repeat="chain in getChains(false)"
+                                            value="{{chain.sys}}">{{chain.sys}}
+                                    </option>
+                                </select>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <h5 class="strong">HINT: </h5>
+                        <p>Donec ut pede. Curabitur elit. Proin cursus, lacus magna, sollicitudin mi. Curabitur volutpat
+                            a, laoreet commodo, odio eget sapien eu mi.</p>
+                    </div>
+                </div>
+
+                <!--  source destination -->
+
+                <div class="row step">
+                    <div class="col-lg-8">
+                        <div class="row">
+                            <h5>{{ mode==='basic' ? 2 : 3}}.1 Source (optional)</h5>
+                            <div class="col-lg-5">
+                                <input
+                                        type="text"
+                                        class="form-control input-lg input-underline"
+                                        ng-model="rule.source"
+                                        name="ip"
+                                        placeholder="IP">
+                            </div>
+                            <div class="col-lg-3">
+                                <select ng-model="rule.source_mask"
+                                        placeholder="Netmask"
+                                        type="number"
+                                        class="form-control input-lg input-underline">
+                                    <option value="" disabled>Net mask</option>
+                                    <option value="24">24</option>
+                                    <option value="25">25</option>
+                                    <option value="26">26</option>
+                                    <option value="27">27</option>
+                                    <option value="28">28</option>
+                                    <option value="29">29</option>
+                                    <option value="30">30</option>
+                                    <option value="31">31</option>
+                                </select>
+
+                            </div>
+                            <div class="col-lg-1">
+                                <div class="checkbox">
+                                    <label>
+                                        <input ng-model="rule.source_reverse" class="" type="checkbox">Inversed
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <h5>{{ mode==='basic' ? 2 : 3}}.2. Destination (optional)</h5>
+                            <div class="col-lg-5">
+                                <input
+                                        type="text"
+                                        class="form-control input-lg input-underline"
+                                        ng-model="rule.destination"
+                                        name="ip"
+                                        placeholder="IP">
+                            </div>
+                            <div class="col-lg-3">
+                                <select ng-model="rule.destination_mask"
+                                        placeholder="Netmask"
+                                        type="number"
+                                        class="form-control input-lg  input-underline">
+                                    <option value="" disabled>Net mask</option>
+                                    <option value="24">24</option>
+                                    <option value="25">25</option>
+                                    <option value="26">26</option>
+                                    <option value="27">27</option>
+                                    <option value="28">28</option>
+                                    <option value="29">29</option>
+                                    <option value="30">30</option>
+                                    <option value="31">31</option>
+                                </select>
+
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="checkbox">
+                                    <label>
+                                        <input ng-type="rule.destination_reverse" type="checkbox">Inversed
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <h5 class="strong">HINT: </h5>
+                        <p>Lorem ipsum cursus sed, viverra luctus, pellentesque quis, placerat nisl dui aliquam eros
+                            orci vitae lectus vulputate aliquam dolor. Duis at lorem nec tortor. Phasellus
+                            vestibulum. Nullam sapien.</p>
+                    </div>
+                </div>
+
+                <!-- Protocols -->
+
+                <div class="row step">
+                    <div class="col-lg-8">
+                        <div class="row">
+                            <h5>{{ mode==='basic' ? 3 : 4}}. Protocol</h5>
+                            <div class="col-lg-8">
+                                <select ng-model="rule.protocol"
+                                        placeholder="Netmask"
+                                        class="form-control input-lg input-underline">
+                                    <option value="" disabled>Choose protocol</option>
+                                    <option value="tcp">TCPC</option>
+                                    <option value="udp">UDP</option>
+                                    <option value="icmp">ICMP</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="col-lg-1">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input ng-model="rule.protocol_reverse" class="" type="checkbox">Inversed
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <h5>{{ mode==='basic' ? 3 : 4}}.1 Choose params</h5>
+
+                            <div ng-show="rule.protocol==''">
+                                <p class="small">Please choose protocol first</p>
+                            </div>
+
+                            <div ng-show="rule.protocol!=''">
+                                <div class="col-lg-5">
+                                    <input ng-repeat="param in getModuleParams(rule.protocol)"
+                                           type="text"
+                                           class="form-control input-lg input-underline"
+                                           ng-model="rule.params[rule.protocol][param.sys].value"
+                                           name="{{param.sys}}"
+                                           placeholder="{{param.sys}}">
+                                </div>
+                                <div class="col-lg-5">
+                                    <ul>
+                                        <li ng-repeat="param in getModuleParams(rule.protocol)">
+                                            <span class="strong bold">{{param.sys}}: </span>{{param.desc}}
+                                        </li>
+                                    </ul>
+                                </div>
+                                <br>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <h5 class="strong">HINT: </h5>
+                        <p>TCP, enabled automatically when -p tcp</p>
+                        <p>UDP, enabled automatically when -p udp</p>
+                        <p>ICMP, enabled automatically when -p icmp</p>
+                    </div>
+                </div>
+
+                <!-- Modules -->
+
+                <div class="row step" ng-show="mode==='advanced'">
+                    <div class="col-lg-8">
+                        <div class="row">
+                            <h5>5. Modules</h5>
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Params</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="module in rule.modules">
+                                    <td>{{ module.sys}}</td>
+                                    <td><span ng-repeat="param in module.params">{{param.sys}}:{{param.value}}{{$last ? '' : ', '}}</span></td>
+                                    <td>
+                                        <a ng-click="removeModule($index)" uib-tooltip="Delete" data-toggle="tooltip" title="Show">
+                                            <i class="fa fa-times"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <select
+                                        ng-model="addModuleName"
+                                        class="form-control input-lg input-underline">
+                                    <option value="" disabled>Choose module</option>
+                                    <option ng-repeat="module in modules"
+                                            value="{{module.sys}}">{{module.sys}}
+                                    </option>
+                                </select>
+
+                            </div>
+                            <div class="col-lg-2">
+                                <button ng-click="addModule()"
+                                        class="btn btn-primary btn-outline btn-rounded">
+                                    Add
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div ng-show="addModuleName!=''">
+                                <div class="col-lg-5">
+                                    <input ng-repeat="param in getModuleParams(addModuleName)"
+                                           type="text"
+                                           class="form-control input-lg input-underline"
+                                           ng-model="addModuleParams[param.sys].value"
+                                           name="{{param.sys}}"
+                                           placeholder="{{param.sys}}">
+                                </div>
+                                <div class="col-lg-5">
+                                    <ul>
+                                        <li ng-repeat="param in getModuleParams(addModuleName)">
+                                            <span class="strong bold">{{param.sys}}: </span>{{param.desc}}
+                                        </li>
+                                    </ul>
+                                </div>
+                                <br>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <h5 class="strong">HINT: </h5>
+                        <p>Donec ut pede. Curabitur elit. Proin cursus, lacus magna, sollicitudin mi. Curabitur volutpat
+                            a, laoreet commodo, odio eget sapien eu mi.</p>
+                    </div>
+                </div>
+
+                <!-- Interface -->
+
+                <div class="row step" ng-show="host.interfaces.length">
+                    <div class="col-lg-8">
+                        <div class="row">
+                            <h5>{{ mode==='basic' ? 4 : 6}}. Interface</h5>
+                            <div class="col-lg-12">
+                                <select
+                                        ng-model="rule.interface"
+                                        placeholder="Chain"
+                                        class="form-control input-lg input-underline">
+                                    <option value="" disabled>Choose interface</option>
+                                    <option ng-repeat="interface in host.interfaces"
+                                            value="{{host.interfaces[$index].sys}}">{{host.interfaces[$index].sys}} - {{ host.interfaces[$index].desc}}
+                                    </option>
+                                </select>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <h5 class="strong">HINT: </h5>
+                        <p>Donec ut pede. Curabitur elit. Proin cursus, lacus magna, sollicitudin mi. Curabitur volutpat
+                            a, laoreet commodo, odio eget sapien eu mi.</p>
+                    </div>
+                </div>
+
+
+                <!-- Action -->
+
+                <div class="row step">
+                    <div class="col-lg-8">
+                        <div class="row">
+                            <h5>{{ (host.interfaces ? 1 : 0) + (mode==='basic' ? 4 : 6)}}. Action</h5>
+                            <div class="col-lg-12">
+                                <select
+                                        ng-model="rule.action"
+                                        placeholder="Chain"
+                                        class="form-control input-lg input-underline">
+                                    <option value="" disabled>Choose action</option>
+                                    <option ng-repeat="action in getActions(false)"
+                                            value="{{action.sys}}">{{action.sys}}
+                                    </option>
+                                </select>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <h5 class="strong">HINT: </h5>
+                        <p>Donec ut pede. Curabitur elit. Proin cursus, lacus magna, sollicitudin mi. Curabitur volutpat
+                            a, laoreet commodo, odio eget sapien eu mi.</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- button -->
+            <div class="row">
+                <div class="form-group button-container">
+                    <button type="submit" ng-click="submit()"
+                            class="btn btn-primary btn-lg btn-outline btn-rounded">
+                        Save
+                    </button>
+                    <button type="submit" ng-click="cancel()"
+                            class="btn btn-white pull-right btn-outline btn-rounded">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

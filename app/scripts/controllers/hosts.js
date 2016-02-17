@@ -21,20 +21,33 @@ angular.module('yapp')
             $location.path(path);
         };
 
-    }).controller('HostShowCtrl', function ($scope, $state, $stateParams, IpTablesService) {
+    }).controller('HostShowCtrl', function ($scope, $state, $location, $stateParams, IpTablesService) {
 
     $scope.$state = $state;
+
+
     var id = $stateParams.id;
+    $scope.rules = [];
+
     IpTablesService.getHosts(false)
         .then(function (data) {
             $scope.hosts = data;
             for (var i = 0, len = data.length; i < len; i++) {
                 if (id == data[i].id) {
                     $scope.host = data[i];
+
+                    //get rules
+                    IpTablesService.getRules($scope.host.id)
+                        .then(function(response){
+                            $scope.rules = response;
+                        })
+
                     break;
                 }
             }
         });
+
+
 
     $scope.oldHost = {};
     $scope.editMode = false;
@@ -94,11 +107,18 @@ angular.module('yapp')
             netmask: 0,
             desc: ''
         };
+
+        newInterfaceTmp.netmask = newInterfaceTmp.netmask*1;
+
         $scope.host.interfaces.push(newInterfaceTmp);
     }
 
     $scope.interfaceValid = function(){
 
+    }
+
+    $scope.addRule = function(){
+        $location.path('/hosts/rule/'+$scope.host.id);
     }
 
 }).config(['$validationProvider', function ($validationProvider) {
