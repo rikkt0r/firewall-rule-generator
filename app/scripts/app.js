@@ -63,6 +63,12 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             parent: 'dashboard',
             templateUrl: 'views/dashboard/overview.html'
         })
+        .state('generate', {
+            url: '/generate',
+            parent: 'dashboard',
+            controller: 'GenerateCtrl',
+            templateUrl: 'views/generate/index.html'
+        })
         .state('reports', {
             url: '/reports',
             parent: 'dashboard',
@@ -93,16 +99,24 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             parent: 'hosts',
             templateUrl: 'views/hosts/graph.html',
             controller: 'HostsCtrl'
-        }).state('hosts-show', {
-        url: '/:id',
-        parent: 'hosts',
-        templateUrl: 'views/hosts/show.html',
-        controller: 'HostShowCtrl'
-    }).state('hosts-add', {
-        url: '/add',
-        parent: 'hosts',
-        templateUrl: 'views/hosts/add.html',
-        controller: 'HostAddCtrl'
-    });
+        })
+        .state('hosts-rule-add', {
+            url: '/rule/:id',
+            parent: 'hosts',
+            templateUrl: 'views/hosts/rule/add.html',
+            controller: 'HostRuleCtrl'
+        })
+        .state('hosts-show', {
+            url: '/:id',
+            parent: 'hosts',
+            templateUrl: 'views/hosts/show.html',
+            controller: 'HostShowCtrl'
+        })
+        .state('hosts-add', {
+            url: '/add',
+            parent: 'hosts',
+            templateUrl: 'views/hosts/add.html',
+            controller: 'HostAddCtrl'
+        });
 
 });

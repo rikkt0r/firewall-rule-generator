@@ -23,7 +23,7 @@
         <td>{{ getType(host.htype)}}</td>
         <td>{{ host.template ? host.template : '-'}}</td>
         <td><span ng-repeat="interface in host.interfaces">{{interface.sys}}{{$last ? '' : ', '}}</span></td>
-        <td>{{ host.rules.length ? host.rules.length : 0}}</td>
+        <td>{{ host.rule_count ? host.rule_count : 0}}</td>
         <td>
             <a ui-sref="hosts-show({ id: host.id})" uib-tooltip="Details" data-toggle="tooltip" title="Show">
                 <i class="fa fa-eye"></i>

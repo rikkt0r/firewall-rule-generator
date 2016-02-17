@@ -13,7 +13,24 @@ angular
 
                 forceReload = forceReload ? true : false;
 
-                return $http.get(_prepareUrl('hosts'),{cache: forceReload})
+                return $http.get(_prepareUrl('hosts'), {cache: forceReload})
+                    .then(function (response) {
+                            _hosts = response.data.hosts;
+                            return _hosts;
+                        },
+                        function () {
+                            return false;
+                        });
+            };
+
+            var _getHost = function (id, forceReload) {
+
+                forceReload = forceReload ? true : false;
+
+                return $http.get(
+                        _prepareUrl('hosts') + id,
+                    {cache: forceReload}
+                    )
                     .then(function (response) {
                             _hosts = response.data.hosts;
                             return _hosts;
@@ -51,32 +68,32 @@ angular
 
             var _addHost = function (host) {
                 return $http({
-                        'method': 'POST',
-                        'url': _prepareUrl('hosts'),
-                        'data': host
-                    })
+                    'method': 'POST',
+                    'url': _prepareUrl('hosts'),
+                    'data': host
+                })
                     .then(function (response) {
-                        return response.data
-                    },
+                            return response.data
+                        },
                         function () {
                             return false;
                         });
             };
 
-            var _editHost = function (id, _data){
+            var _editHost = function (id, _data) {
                 delete _data.id;
-                _data.htype = _data.htype*1;
-                for(var i = 0; i < _data.interfaces.length; i++){
+                _data.htype = _data.htype * 1;
+                for (var i = 0; i < _data.interfaces.length; i++) {
                     _data.interfaces[i].netmask = _data.interfaces[i].netmask;
                 }
                 return $http({
-                        'method': 'PUT',
-                        'url': _prepareUrl('hosts') + id + '/',
-                        'data': _data
-                    })
+                    'method': 'PUT',
+                    'url': _prepareUrl('hosts') + id + '/',
+                    'data': _data
+                })
                     .then(function (response) {
-                        return response.data
-                    },
+                            return response.data
+                        },
                         function () {
                             return false;
                         });
@@ -120,15 +137,59 @@ angular
 
             };
 
+            var _getLogLevels = function () {
+                return _getAvailable('loglevels');
+            };
+
             var _getAvailable = function (part) {
 
-                if (['modules', 'chains', 'tables', 'actions', 'templates'].indexOf(part) < 0) {
+                if (['modules', 'chains', 'loglevels', 'tables', 'actions', 'templates'].indexOf(part) < 0) {
                     throw "invalid option";
                 }
 
                 var url = _prepareUrl('available') + '/' + part;
 
                 return $http.get(url)
+                    .then(function (response) {
+                            return response.data[part]
+                        },
+                        function () {
+                            return false;
+                        });
+            };
+
+            var _addRule = function (id, _data) {
+                return $http({
+                    'method': 'POST',
+                    'url': _prepareUrl('hosts') + id + '/rules/',
+                    'data': _data
+                })
+                    .then(function (response) {
+                            return response.data
+                        },
+                        function () {
+                            return false;
+                        });
+            };
+
+            var _getRules = function (id) {
+                return $http({
+                    'method': 'GET',
+                    'url': _prepareUrl('hosts') + id + '/rules/'
+                })
+                    .then(function (response) {
+                            return response.data
+                        },
+                        function () {
+                            return false;
+                        });
+            };
+
+            var _generate = function(id){
+                return $http({
+                    'method': 'GET',
+                    'url': _prepareUrl('hosts') + id + '/generate/iptables/'
+                })
                     .then(function (response) {
                             return response.data
                         },
@@ -139,6 +200,7 @@ angular
 
             return {
                 getHosts: _getHosts,
+                getHost: _getHost,
                 addHost: _addHost,
                 editHost: _editHost,
                 removeHost: _removeHost,
@@ -149,7 +211,11 @@ angular
                 getChains: _getChains,
                 getTemplates: _getTemplates,
                 getActions: _getActions,
-                getTemplate: _getTemplate
+                getLogLevels: _getLogLevels,
+                getTemplate: _getTemplate,
+                addRule: _addRule,
+                getRules: _getRules,
+                generate: _generate
             }
         }
     )
