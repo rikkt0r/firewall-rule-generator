@@ -14,7 +14,16 @@ angular.module('yapp')
         $scope.chains = [];
         $scope.tables = [];
         $scope.actions = [];
-        $scope.loglevels = [];
+        $scope.loglevels = [
+            {sys: "Emergency", value: 0},
+            {sys: "Alert", value: 1},
+            {sys: "Critical", value: 2},
+            {sys: "Error", value: 3},
+            {sys: "Warning", value: 4},
+            {sys: "Notice", value: 5},
+            {sys: "Informational", value: 6},
+            {sys: "Debug", value: 7}
+        ];
         $scope.modules = [{
             "sys": "tcp",
             "desc": "TCP, enabled automatically when -p tcp",
@@ -43,7 +52,7 @@ angular.module('yapp')
                 ]
             }];
 
-        $scope.mode = 'advanced';
+        $scope.mode = '';
 
         $scope.addModuleName = '';
         $scope.addModuleParams = [];
@@ -86,15 +95,6 @@ angular.module('yapp')
             "protocol": "",
             'interface': '',
             "modules": [
-                {
-                    "sys": "state", "params": [
-                    {"sys": "state", "value": "RELATED,ESTABLISHED"},
-                ]
-                },{
-                    "sys": "sta2te", "params": [
-                    {"sys": "state", "value": "RELATED,ESTABLISHED"},
-                ]
-                }
             ],
             "action": "",
             "params": []
@@ -107,10 +107,15 @@ angular.module('yapp')
             var rulePrepared = prepareRule();
             IpTablesService.addRule($scope.host.id, rulePrepared).then(
                 function(response){
-                    console.log(response)
+                    $state.go('hosts-show', {id: $scope.host.id}, {reload: true});
+
                 }
             )
-        }
+        };
+
+        $scope.cancel = function(){
+            $state.go('hosts-show', {id: $scope.host.id}, {reload: true});
+        };
 
         var prepareRule = function() {
             var rulePrepared = {};
@@ -126,6 +131,10 @@ angular.module('yapp')
             rulePrepared.destination_reverse = $scope.rule.destination_reverse;
             rulePrepared.action = $scope.rule.action;
             rulePrepared.modules = [];
+            if($scope.rule.action == 'LOG'){
+                rulePrepared.log_level =  $scope.rule.log_level*1;
+                rulePrepared.log_prefix =  $scope.rule.log_prefix;
+            }
 
             if ($scope.rule.protocol !== '') {
                 rulePrepared.modules.push({
@@ -245,7 +254,7 @@ angular.module('yapp')
 
         IpTablesService.getLogLevels()
             .then(function (data) {
-                $scope.loglevels = data;
+                //$scope.loglevels = data;
             });
 
         IpTablesService.getModules()

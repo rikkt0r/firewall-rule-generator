@@ -57,7 +57,7 @@
                     </dl>
                 </div>
                 <div class="col-lg-6">
-                    <h4>Interfaces</h4>
+                    <h4>interfaces</h4>
                     <table class="table interfaces table-striped">
                         <thead>
                         <tr>
@@ -75,16 +75,16 @@
                             <td>{{interface.sys}}</td>
                             <td>{{interface.desc}}</td>
                             <td ng-show="editMode">
-                                <i ng-click="removeInterface($index)" class="fa fa-times"></i>
+                                <i ng-click="removeinterface($index)" class="fa fa-times"></i>
                             </td>
                         </tr>
                         <tr ng-show="editMode">
                             <td><input type="text"
                                        class="form-control input-underline input-lg"
-                                       ng-model="newInterface.ip"
+                                       ng-model="newinterface.ip"
                                        id="ip"
                                        placeholder="IP"></td>
-                            <td><select ng-model="newInterface.netmask"
+                            <td><select ng-model="newinterface.netmask"
                                         placeholder="Netmask"
                                         class="form-control input-underline">
                                 <option value="" disabled>Net mask</option>
@@ -99,16 +99,16 @@
                             </select></td>
                             <td><input type="text"
                                        class="form-control input-underline input-lg"
-                                       ng-model="newInterface.sys"
+                                       ng-model="newinterface.sys"
                                        id="sys"
                                        placeholder="System name"></td>
                             <td><input type="text"
                                        class="form-control input-underline input-lg"
-                                       ng-model="newInterface.desc"
+                                       ng-model="newinterface.desc"
                                        id="idesc"
                                        placeholder="Description"></td>
                             <td ng-show="editMode">
-                                <i ng-click="addInterface()" class="fa fa-plus"></i>
+                                <i ng-click="addinterface()" class="fa fa-plus"></i>
                             </td>
                         </tr>
                         </tbody>
@@ -117,28 +117,48 @@
             </div>
             <div class="row">
                 <h4>Rules</h4>
-                <table class="table interfaces table-striped">
-                    <thead>
-                    <tr>
-                        <th>IP</th>
-                        <th>Net mask</th>
-                        <th>System name</th>
-                        <th>Description</th>
-                        <th ng-show="editMode"></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="interface in host.interfaces">
-                        <td>{{interface.ip}}</td>
-                        <td>{{interface.netmask}}</td>
-                        <td>{{interface.sys}}</td>
-                        <td>{{interface.desc}}</td>
-                        <td ng-show="editMode">
-                            <i ng-click="removeInterface($index)" class="fa fa-times"></i>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                <div class="row">
+                    <table class="table rules table-striped">
+                        <thead>
+                        <tr>
+                            <th>Table</th>
+                            <th>Chain</th>
+                            <th>Protocol</th>
+                            <th>Source</th>
+                            <th>Destination</th>
+                            <th>interface</th>
+                            <th>Modules</th>
+                            <th>Action</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="rule in rules">
+                            <td>{{rule.table}}</td>
+                            <td>{{rule.chain}}</td>
+                            <td>{{rule.protocol}}</td>
+                            <td>{{rule.source_reverse ? '!' : ''}}{{rule.source}}{{rule.source ? '/' : ''}}{{rule.source_mask}}</td>
+                            <td>{{rule.destination_reverse ? '!' : ''}}{{rule.destination}}{{rule.destination ? '/' : ''}}{{rule.destination_mask}}</td>
+                            <td>{{rule.interface}}</td>
+                            <td>
+                                <div ng-repeat="module in rule.modules">
+                                    {{module.sys}}
+
+                                    <span ng-repeat="param in module.params">
+                                        {{param.sys}}:{{param.value}}
+                                    </span>
+
+                                    {{$last ? '' : ', '}}
+                                </div><br/>
+                            </td>
+                            <td>{{rule.action}}</td>
+                            <td>
+                                <i ng-show="editMode" ng-click="removeRule(rule.id)" class="fa fa-times"></i>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
                 <div class="form-group button-container">
                     <button type="submit" ng-click="addRule()" class="btn btn-primary btn-white btn-outline btn-lg btn-rounded">
                         Add Rule

@@ -3,18 +3,33 @@
 * [frontend] @castoridae,  snajqer@gmail.com
 
 
-## TODO:
+## Before running our tool
+check available modules
+```bash
+cat /proc/net/ip_tables_matches
+```
 
-#### front:
-* kopiowanie reguły jako nowa
-* modyfikowanie reguly
-* drag&drop reguł by był spoko, ale raczej po prostu klepnąć jakieś strzałki up/down do zmiany kolejnosci
+check available actions
+```bash
+cat /proc/net/ip_tables_targets
+```
 
-#### back:
-* /api/hosts/[uuid4_host_id]/rules/[uuid4_rule_id]/up/ POST (yup, we are implementing that..)
-* /api/hosts/[uuid4_host_id]/rules/[uuid4_rule_id]/down/ POST
-
-* przygotowanie datasetu z templateami
+also consider running the following for greater profit~~
+```bash
+echo 1 > /proc/sys/net/ipv4/tcp_syncookies
+echo 1 > /proc/sys/net/ipv4/ip_forward
+echo 1 > /proc/sys/net/ipv4/icmp_echo_ignore_broadcasts
+# log packets from incorrect sources
+echo 1 > /proc/sys/net/ipv4/conf/all/log_martians
+echo 1 > /proc/sys/net/ipv4/icmp_ignore_bogus_error_responses
+# source validation by reversed path (RFC1812)
+echo 1 > /proc/sys/net/ipv4/conf/all/rp_filter 
+echo 0 > /proc/sys/net/ipv4/conf/all/send_redirects
+echo 0 > /proc/sys/net/ipv4/conf/all/accept_source_route
+echo 1 > /proc/sys/net/ipv4/conf/all/secure_redirects
+# dynamic address allocation
+echo 1 > /proc/sys/net/ipv4/ip_dynaddr 
+```
 
 ### Run:
 
@@ -26,7 +41,9 @@ db.addUser({'user': 'iptables', 'pwd': 'iptables_pass', roles: ['readWrite', 'db
 ```
 * $bash (import data):
 ```bash
-mongoimport --db iptables --collection moduleavailable --drop --file dataset_modules.json
+mongoimport --db iptables --collection module_available --drop --file dataset_modules.json
+mongoimport --db iptables --collection rules --drop --file dataset_rules.json
+mongoimport --db iptables --collection templates --drop --file dataset_templates.json
 ```
 * python virtualenv:
 ```sh

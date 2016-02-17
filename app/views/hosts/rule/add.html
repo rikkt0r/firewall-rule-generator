@@ -18,7 +18,7 @@
             </div>
         </div>
 
-        <div class="jumbotron" >
+        <div class="jumbotron" ng-show="mode!==''">
             <h3 ng-show="mode==='basic'">Basic mode - FILTER</h3>
             <h3 ng-show="mode==='advanced'">Advanced mode</h3>
             <div class="rules-input">
@@ -241,9 +241,11 @@
                                 <tbody>
                                 <tr ng-repeat="module in rule.modules">
                                     <td>{{ module.sys}}</td>
-                                    <td><span ng-repeat="param in module.params">{{param.sys}}:{{param.value}}{{$last ? '' : ', '}}</span></td>
+                                    <td><span ng-repeat="param in module.params">{{param.sys}}:{{param.value}}{{$last ? '' : ', '}}</span>
+                                    </td>
                                     <td>
-                                        <a ng-click="removeModule($index)" uib-tooltip="Delete" data-toggle="tooltip" title="Show">
+                                        <a ng-click="removeModule($index)" uib-tooltip="Delete" data-toggle="tooltip"
+                                           title="Show">
                                             <i class="fa fa-times"></i>
                                         </a>
                                     </td>
@@ -298,12 +300,12 @@
                     </div>
                 </div>
 
-                <!-- Interface -->
+                <!-- interfac -->
 
                 <div class="row step" ng-show="host.interfaces.length">
                     <div class="col-lg-8">
                         <div class="row">
-                            <h5>{{ mode==='basic' ? 4 : 6}}. Interface</h5>
+                            <h5>{{ mode==='basic' ? 4 : 6}}. interface</h5>
                             <div class="col-lg-12">
                                 <select
                                         ng-model="rule.interface"
@@ -311,7 +313,8 @@
                                         class="form-control input-lg input-underline">
                                     <option value="" disabled>Choose interface</option>
                                     <option ng-repeat="interface in host.interfaces"
-                                            value="{{host.interfaces[$index].sys}}">{{host.interfaces[$index].sys}} - {{ host.interfaces[$index].desc}}
+                                            value="{{host.interfaces[$index].sys}}">{{host.interfaces[$index].sys}} - {{
+                                        host.interfaces[$index].desc}}
                                     </option>
                                 </select>
 
@@ -338,10 +341,27 @@
                                         placeholder="Chain"
                                         class="form-control input-lg input-underline">
                                     <option value="" disabled>Choose action</option>
+                                    <option value="LOG">LOG</option>
                                     <option ng-repeat="action in getActions(false)"
                                             value="{{action.sys}}">{{action.sys}}
                                     </option>
                                 </select>
+                                <div ng-show="rule.action==='LOG'">
+                                    <select
+                                            ng-model="rule.log_level"
+                                            placeholder="Chain"
+                                            class="form-control input-lg input-underline">
+                                        <option value="" disabled>Choose log level</option>
+                                        <option ng-repeat="level in loglevels"
+                                                value="{{level.value}}">{{level.sys}}
+                                        </option>
+                                    </select>
+                                    <input type="text"
+                                           class="form-control input-lg input-underline"
+                                           ng-model="log_prefix"
+                                           name="log_prefix"
+                                           placeholder="Log prefix">
+                                </div>
 
                             </div>
                         </div>
@@ -368,7 +388,9 @@
                     </button>
                 </div>
             </div>
+
         </div>
+
     </div>
 </div>
 

@@ -23,7 +23,7 @@
                         </select>
                         <select ng-model="host.template" class="form-control input-underline input-lg">
                             <option value="" disabled>Select prefered template</option>
-                            <option ng-repeat="template in templates" value="template.id">{{template.desc}}</option>
+                            <option ng-repeat="template in templates" value="template.id">{{template.name}} - {{template.desc}}</option>
                         </select>
                     </div>
                 </div>
@@ -33,7 +33,7 @@
                 <div class="col-lg-6">
 
                     <h4>Add interface:</h4>
-                    <form name="Interface" id="interface">
+                    <form name="interface" id="interface">
 
                         <!--@todo fix validation&lt;!&ndash;&ndash;&gt;
 
@@ -107,10 +107,9 @@
                                placeholder="Description"
                         >
 
-
                         <button type="submit"
-                                ng-disabled="!interface.checkValid(Interface)"
-                                ng-click="interface.submit(Interface)"
+                                ng-disabled="!interfaceValid()"
+                                ng-click="interface.submit(interface)"
                                 class="btn btn-outline btn-small btn-rounded pull-right">Add
                             interface
                         </button>
@@ -118,7 +117,7 @@
                     </form>
                 </div>
                 <div class="col-lg-6">
-                    <h4>Interfaces:</h4>
+                    <h4>interfaces:</h4>
                     <div class="interface">
                         <table class="table">
                             <thead>
@@ -137,7 +136,7 @@
                                 <td>{{interface.sys}}</td>
                                 <td>{{interface.desc}}</td>
                                 <td>
-                                    <i ng-click="removeInterface($index)" class="fa fa-times"></i>
+                                    <i ng-click="removeinterface($index)" class="fa fa-times"></i>
                                 </td>
                             </tr>
                             </tbody>
