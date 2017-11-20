@@ -1,6 +1,10 @@
 # FwGen
-* [backend] @rikkt0r, grzegorz-wojcicki@outlook.com
-* [frontend] @castoridae,  snajqer@gmail.com
+### 2016 AGH-UST academic project
+
+Left as-is, someday i will pick this up, refactor and push forward.
+
+* [backend] rikkt0r, grzegorz.p.wojcicki@gmail.com
+* [frontend] castoridae,  snajqer@gmail.com
 
 
 ## Before running our tool
